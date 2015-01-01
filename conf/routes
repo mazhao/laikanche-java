@@ -1,0 +1,49 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# -------- foreground --------
+#
+# /                 #首  页：展示所有的过滤项目，列表
+#
+
+# Home page
+GET           /                          controllers.Application.index
+
+
+#
+
+# Map static resources from the /public folder to the /assets URL path
+GET           /assets/*file              controllers.Assets.at(path="/public", file)
+
+
+
+
+#
+# -------- beckground --------
+#
+# get       /admin  -> admin 页面
+
+GET           /admin                     controllers.Admin.index()
+
+#
+# che CRUD
+#  list -> create -> read
+#       -> read   -> delete
+#                 -> update
+# get       /admin/che      -> list
+# post      /admin/che      -> create
+# post      /admin/che/$id  -> update
+# get       /admin/che/$id  -> read
+# delete    /admin/che/$id  -> delete
+
+GET           /admin/che                 controllers.AdminChe.index()
+GET           /admin/che/:id             controllers.AdminChe.read(id : Long)
+GET           /admin/che/:id/edit        controllers.AdminChe.edit(id: Long)
+POST          /admin/che                 controllers.AdminChe.save()
+DELETE        /admin/che/:id             controllers.AdminChe.delete(id: Long)
+
+GET /admin/che-gotoadd  controllers.AdminChe.gotoAdd()
+
+
+GET         /admin/carbrand         controllers.AdminCarBrand.index()

@@ -1,0 +1,12 @@
+@(carBrandList: List[CarBrand])
+
+@main("Laikanche Admin") {
+
+    this is admin car brand list page
+
+    <ul>
+    @for(carBrand <- carBrandList) {
+        <li>@carBrand.name</li>
+    }
+    </ul>
+}
