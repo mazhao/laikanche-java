@@ -8,13 +8,13 @@
 #
 
 # Home page
-GET           /                          controllers.Application.index
+GET           /                                   controllers.Application.index
 
 
 #
 
 # Map static resources from the /public folder to the /assets URL path
-GET           /assets/*file              controllers.Assets.at(path="/public", file)
+GET           /assets/*file                       controllers.Assets.at(path="/public", file)
 
 
 
@@ -24,7 +24,7 @@ GET           /assets/*file              controllers.Assets.at(path="/public", f
 #
 # get       /admin  -> admin 页面
 
-GET           /admin                     controllers.Admin.index()
+GET           /admin                              controllers.Admin.index()
 
 #
 # che CRUD
@@ -37,13 +37,23 @@ GET           /admin                     controllers.Admin.index()
 # get       /admin/che/$id  -> read
 # delete    /admin/che/$id  -> delete
 
-GET           /admin/che                 controllers.AdminChe.index()
-GET           /admin/che/:id             controllers.AdminChe.read(id : Long)
-GET           /admin/che/:id/edit        controllers.AdminChe.edit(id: Long)
-POST          /admin/che                 controllers.AdminChe.save()
-DELETE        /admin/che/:id             controllers.AdminChe.delete(id: Long)
+GET           /admin/che                          controllers.AdminChe.index()
+GET           /admin/che/:id                      controllers.AdminChe.read(id : Long)
+GET           /admin/che/:id/edit                 controllers.AdminChe.edit(id: Long)
+POST          /admin/che                          controllers.AdminChe.save()
+DELETE        /admin/che/:id                      controllers.AdminChe.delete(id: Long)
 
-GET /admin/che-gotoadd  controllers.AdminChe.gotoAdd()
+GET           /admin/che-gotoadd                  controllers.AdminChe.gotoAdd()
+
+# car brand begin
+
+GET           /admin/carbrand                     controllers.AdminCarBrand.index()
+GET           /admin/carbrand-gotoadd             controllers.AdminCarBrand.gotoAdd()
+POST          /admin/carbrand                     controllers.AdminCarBrand.add()
+POST          /admin/carbrand/:id/edit            controllers.AdminCarBrand.edit(id: Long)
+GET           /admin/carbrand-gotoedit/:id        controllers.AdminCarBrand.gotoEdit(id : Long)
+GET           /admin/carbrand/:id                 controllers.AdminCarBrand.detail(id:Long)
+POST          /admin/carbrand/:id/delete          controllers.AdminCarBrand.delete(id:Long)
 
 
-GET         /admin/carbrand         controllers.AdminCarBrand.index()
+

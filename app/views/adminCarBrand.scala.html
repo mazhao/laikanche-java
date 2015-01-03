@@ -2,11 +2,37 @@
 
 @main("Laikanche Admin") {
 
-    this is admin car brand list page
+    <h3>
+    <span class="label label-primary">汽车品牌管理</span>
+    </h3>
 
-    <ul>
-    @for(carBrand <- carBrandList) {
-        <li>@carBrand.name</li>
-    }
-    </ul>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>品牌名称</th>
+                <th>修改</th>
+                <th>删除</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @for(carBrand <- carBrandList) {
+
+                <tr>
+                    <th scope="row">@carBrand.id</th>
+                    <td>@carBrand.name</td>
+                    <td> <a href="/admin/carbrand-gotoedit/@carBrand.id">修改</a></td>
+                    <td><a href="/admin/carbrand/@carBrand.id">删除</a></td>
+                </tr>
+
+
+            }
+        </tbody>
+    </table>
+
+
+
+
+    <br/> <a class="btn btn-info" href="/admin/carbrand-gotoadd">添加新品牌</a>
 }
