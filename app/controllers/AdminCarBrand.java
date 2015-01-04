@@ -67,9 +67,9 @@ public class AdminCarBrand extends Controller {
 
             Ebean.save(carBrand);
 
-            session("op_message", carBrand.name + " 已经添加完成。");
-
         } else if (Constants.OP_DELETE.equalsIgnoreCase(carBrandForm.operationCode)) {
+
+            // @todo check sub modules not exist
             Ebean.delete(CarBrand.class, carBrandForm.id);
 
         } else if (Constants.OP_UPDATE.equalsIgnoreCase(carBrandForm.operationCode)) {
@@ -79,9 +79,7 @@ public class AdminCarBrand extends Controller {
 
             Ebean.update(carBrand);
         } else {
-            // error
            // @todo with error message
-
         }
 
         return redirect(routes.AdminCarBrand.index());
