@@ -2,18 +2,28 @@
 
 @import forms.CarBrandForm
 @import helper._
+@import utils.Constraints
 
 
 @main("Laikanche Admin") {
     <br/>
     @helper.form(action = routes.AdminCarBrand.saveOrUpdateOrDelete(), 'class -> "form-horizontal") {
 
-        <div class="form-group">
-            <label for="id" class="col-sm-2 control-label"> 汽车品牌唯一标志</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" id="id" name="id" placeholder="" value="@carBrandForm.get().id">
+        @if( Constraints.OP_READ.equalsIgnoreCase(carBrandForm.get().operationCode) ||
+                Constraints.OP_UPDATE.equalsIgnoreCase(carBrandForm.get().operationCode) ||
+                Constraints.OP_DELETE.equalsIgnoreCase(carBrandForm.get().operationCode)
+
+        ) {
+
+            <div class="form-group">
+                <label for="id" class="col-sm-2 control-label"> 汽车品牌唯一标志</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="id" name="id" placeholder="" value="@carBrandForm.get().id" readonly>
+                </div>
             </div>
-        </div>
+
+        }
+
 
         <div class="form-group">
             <label for="name" class="col-sm-2 control-label">汽车品牌名称</label>
@@ -39,7 +49,27 @@
 
 
         <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" class="btn btn-default">保存</button>
+
+            @if(Constraints.OP_CREATE.equalsIgnoreCase(carBrandForm.get().operationCode)) {
+
+                <button type="submit" class="btn btn-default">保存</button>
+            }
+
+            @if(Constraints.OP_READ.equalsIgnoreCase(carBrandForm.get().operationCode)) {
+
+                <button type="submit" class="btn btn-default">关闭</button>
+            }
+
+            @if(Constraints.OP_UPDATE.equalsIgnoreCase(carBrandForm.get().operationCode)) {
+
+                <button type="submit" class="btn btn-default">保存</button>
+            }
+
+            @if(Constraints.OP_DELETE.equalsIgnoreCase(carBrandForm.get().operationCode)) {
+
+                <button type="submit" class="btn btn-default">删除</button>
+            }
+
         </div>
 
     }
