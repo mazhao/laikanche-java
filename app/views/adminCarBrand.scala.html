@@ -21,9 +21,9 @@
 
                 <tr>
                     <th scope="row">@carBrand.id</th>
-                    <td>@carBrand.name</td>
-                    <td> <a href="/admin/carbrand-gotoedit/@carBrand.id">修改</a></td>
-                    <td><a href="/admin/carbrand/@carBrand.id">删除</a></td>
+                    <td><a href="/admin/carbrand/@carBrand.id/read">@carBrand.name</a></td>
+                    <td> <a href="/admin/carbrand/@carBrand.id/update">修改</a></td>
+                    <td><a href="/admin/carbrand/@carBrand.id/delete">删除</a></td>
                 </tr>
 
 
@@ -34,5 +34,5 @@
 
 
 
-    <br/> <a class="btn btn-info" href="/admin/carbrand-gotoadd">添加新品牌</a>
+    <br/> <a class="btn btn-info" href="/admin/carbrand/0/create">添加新品牌</a>
 }

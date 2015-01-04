@@ -6,6 +6,7 @@
 
 @main("Laikanche Admin") {
 
+    @*
     @helper.form(action = routes.AdminCarBrand.delete(carBrandForm.get().id)) {
 
         @helper.inputText(carBrandForm("id"), 'id -> "id")
@@ -14,5 +15,5 @@
         <button>Delete</button>
 
     }
-
+*@
 }
