@@ -3,9 +3,9 @@ package controllers;
 import com.avaje.ebean.Ebean;
 import forms.CarBrandForm;
 import models.*;
-import play.*;
 import play.data.Form;
 import play.mvc.*;
+import utils.Constants;
 
 import java.util.List;
 
@@ -17,90 +17,75 @@ public class AdminCarBrand extends Controller {
 
 
     public static Result index() {
-
         List<CarBrand> carBrandList = CarBrand.find.all();
-
-
         return ok(views.html.adminCarBrand.render(carBrandList));
     }
 
 
-    public static Result gotoAdd() {
-        return ok(views.html.adminCarBrandAdd.render( carBrandFormFactory ));
-    }
+    // one action for save, update and delete
+    public static Result read(Long id, String operation) {
 
-    public static Result add() {
-        // 1. 添加一个新的车品牌
-
-
-        CarBrandForm newCarBrandForm = carBrandFormFactory.bindFromRequest().get();
-
-        // form validation goes here
-
-        CarBrand carBrand = new CarBrand();
-        carBrand.name = newCarBrandForm.name;
-        carBrand.description = newCarBrandForm.description;
-
-        Ebean.save(carBrand);
-
-        // 2. 重新回到列表页
-        return redirect(routes.AdminCarBrand.index());
-
-    }
-
-
-    public static Result gotoEdit(Long id) {
-
-        // 从数据库查询原值
-        CarBrand carBrand = Ebean.find(CarBrand.class, id);
+        if (operation == null) {
+            operation = Constants.OP_ERROR;
+        }
 
         // 用原值建造Form
         CarBrandForm cbf = new CarBrandForm();
-        cbf.id = id;
-        cbf.name = carBrand.name;
-        cbf.description = carBrand.description;
 
-        // 把Form展现到页面。
-        return ok(views.html.adminCarBrandEdit.render(carBrandFormFactory.fill(cbf)));
+        if (Constants.OP_DELETE.equalsIgnoreCase(operation) ||
+                Constants.OP_UPDATE.equalsIgnoreCase(operation) ||
+                Constants.OP_READ.equalsIgnoreCase(operation)
+                ) { // update, delete, read
+            // 从数据库查询原值
+            CarBrand carBrand = Ebean.find(CarBrand.class, id);
+
+            cbf.id = id;
+            cbf.name = carBrand.name;
+            cbf.description = carBrand.description;
+
+            cbf.operationCode = operation;
+        } else if (operation.equalsIgnoreCase(Constants.OP_CREATE)) { // create
+            cbf.operationCode = Constants.OP_CREATE;
+        } else {
+            return redirect(routes.AdminCarBrand.index()); // @todo with error message
+        }
+
+        return ok(views.html.adminCarBrandRead.render(carBrandFormFactory.fill(cbf)));
     }
 
-    public static Result edit(Long id) {
+    public static Result saveOrUpdateOrDelete() {
 
-        // 使用表单中的数据更新数据库中的车品牌。
         CarBrandForm carBrandForm = carBrandFormFactory.bindFromRequest().get();
 
-        CarBrand carBrand = Ebean.find(CarBrand.class, id);
-        carBrand.name = carBrandForm.name;
-        carBrand.description = carBrandForm.description;
+        if (Constants.OP_CREATE.equalsIgnoreCase(carBrandForm.operationCode)) {
+            // create
+            // form validation goes here
 
-        Ebean.update(carBrand);
+            CarBrand carBrand = new CarBrand();
+            carBrand.name = carBrandForm.name;
+            carBrand.description = carBrandForm.description;
 
-        // 2. 重新回到列表页
-        return redirect(routes.AdminCarBrand.index());
+            Ebean.save(carBrand);
 
-    }
+            session("op_message", carBrand.name + " 已经添加完成。");
 
+        } else if (Constants.OP_DELETE.equalsIgnoreCase(carBrandForm.operationCode)) {
+            Ebean.delete(CarBrand.class, carBrandForm.id);
 
-    public static Result detail(Long id) {
+        } else if (Constants.OP_UPDATE.equalsIgnoreCase(carBrandForm.operationCode)) {
+            CarBrand carBrand = Ebean.find(CarBrand.class, carBrandForm.id);
+            carBrand.name = carBrandForm.name;
+            carBrand.description = carBrandForm.description;
 
-        // 从数据库查询原值
-        CarBrand carBrand = Ebean.find(CarBrand.class, id);
+            Ebean.update(carBrand);
+        } else {
+            // error
+           // @todo with error message
 
-        // 用原值建造Form
-        CarBrandForm cbf = new CarBrandForm();
-        cbf.id = id;
-        cbf.name = carBrand.name;
-        cbf.description = carBrand.description;
-
-        // 把Form展现到页面。
-        return ok(views.html.adminCarBrandDetail.render(carBrandFormFactory.fill(cbf)));
-    }
-
-    public static Result delete(Long id) {
-
-        Ebean.delete(CarBrand.class, id);
+        }
 
         return redirect(routes.AdminCarBrand.index());
+
     }
 
 }
