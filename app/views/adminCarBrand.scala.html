@@ -2,37 +2,40 @@
 
 @main("Laikanche Admin") {
 
-    <h3>
-    <span class="label label-primary">汽车品牌管理</span>
-    </h3>
+    <div class="panel panel-default " style="margin-top: 10px";>
+        <div class="panel-heading">汽车品牌管理</div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>品牌名称</th>
+                        <th>修改</th>
+                        <th>删除</th>
+                    </tr>
+                </thead>
+                <tbody>
 
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>品牌名称</th>
-                <th>修改</th>
-                <th>删除</th>
-            </tr>
-        </thead>
-        <tbody>
+                @for(carBrand <- carBrandList) {
 
-            @for(carBrand <- carBrandList) {
-
-                <tr>
-                    <th scope="row">@carBrand.id</th>
-                    <td><a href="/admin/carbrand/@carBrand.id/read">@carBrand.name</a></td>
-                    <td> <a href="/admin/carbrand/@carBrand.id/update">修改</a></td>
-                    <td><a href="/admin/carbrand/@carBrand.id/delete">删除</a></td>
-                </tr>
-
-
-            }
-        </tbody>
-    </table>
+                    <tr>
+                        <th scope="row">@carBrand.id</th>
+                        <td><a href="/admin/carbrand/@carBrand.id/read">@carBrand.name</a></td>
+                        <td> <a href="/admin/carbrand/@carBrand.id/update">修改</a></td>
+                        <td><a href="/admin/carbrand/@carBrand.id/delete">删除</a></td>
+                    </tr>
 
 
+                }
+                </tbody>
+            </table>        </div>
+
+        <div class="panel-footer">
+            @session().get("op_message") <br/>
+            <a class="btn btn-info" href="/admin/carbrand/0/create">添加新品牌</a>
+        </div>
+
+    </div>
 
 
-    <br/> <a class="btn btn-info" href="/admin/carbrand/0/create">添加新品牌</a>
 }

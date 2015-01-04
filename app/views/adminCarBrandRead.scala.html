@@ -2,16 +2,20 @@
 
 @import forms.CarBrandForm
 @import helper._
-@import utils.Constraints
+@import utils.Constants
 
 
 @main("Laikanche Admin") {
     <br/>
+
+    @flash().get("message") <br/>
+
+
     @helper.form(action = routes.AdminCarBrand.saveOrUpdateOrDelete(), 'class -> "form-horizontal") {
 
-        @if( Constraints.OP_READ.equalsIgnoreCase(carBrandForm.get().operationCode) ||
-                Constraints.OP_UPDATE.equalsIgnoreCase(carBrandForm.get().operationCode) ||
-                Constraints.OP_DELETE.equalsIgnoreCase(carBrandForm.get().operationCode)
+        @if( Constants.OP_READ.equalsIgnoreCase(carBrandForm.get().operationCode) ||
+                Constants.OP_UPDATE.equalsIgnoreCase(carBrandForm.get().operationCode) ||
+                Constants.OP_DELETE.equalsIgnoreCase(carBrandForm.get().operationCode)
 
         ) {
 
@@ -50,22 +54,22 @@
 
         <div class="col-sm-offset-2 col-sm-10">
 
-            @if(Constraints.OP_CREATE.equalsIgnoreCase(carBrandForm.get().operationCode)) {
+            @if(Constants.OP_CREATE.equalsIgnoreCase(carBrandForm.get().operationCode)) {
 
                 <button type="submit" class="btn btn-default">保存</button>
             }
 
-            @if(Constraints.OP_READ.equalsIgnoreCase(carBrandForm.get().operationCode)) {
+            @if(Constants.OP_READ.equalsIgnoreCase(carBrandForm.get().operationCode)) {
 
                 <button type="submit" class="btn btn-default">关闭</button>
             }
 
-            @if(Constraints.OP_UPDATE.equalsIgnoreCase(carBrandForm.get().operationCode)) {
+            @if(Constants.OP_UPDATE.equalsIgnoreCase(carBrandForm.get().operationCode)) {
 
                 <button type="submit" class="btn btn-default">保存</button>
             }
 
-            @if(Constraints.OP_DELETE.equalsIgnoreCase(carBrandForm.get().operationCode)) {
+            @if(Constants.OP_DELETE.equalsIgnoreCase(carBrandForm.get().operationCode)) {
 
                 <button type="submit" class="btn btn-default">删除</button>
             }
