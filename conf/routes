@@ -47,13 +47,25 @@ GET           /admin/che-gotoadd                  controllers.AdminChe.gotoAdd()
 
 # car brand begin
 
+# to car brand list
 GET           /admin/carbrand                     controllers.AdminCarBrand.index()
-GET           /admin/carbrand-gotoadd             controllers.AdminCarBrand.gotoAdd()
+
+# add, update and delete
 POST          /admin/carbrand                     controllers.AdminCarBrand.add()
 POST          /admin/carbrand/:id/edit            controllers.AdminCarBrand.edit(id: Long)
+POST          /admin/carbrand/:id/delete          controllers.AdminCarBrand.delete(id:Long)
+
+# loaded form，blank form，upate or delete
 GET           /admin/carbrand-gotoedit/:id        controllers.AdminCarBrand.gotoEdit(id : Long)
 GET           /admin/carbrand/:id                 controllers.AdminCarBrand.detail(id:Long)
-POST          /admin/carbrand/:id/delete          controllers.AdminCarBrand.delete(id:Long)
+GET           /admin/carbrand-gotoadd             controllers.AdminCarBrand.gotoAdd()
+
+# smple the load & save
+# /admin/carbrand/:id/:type type for new,update,delete
+# html submit name with form-type value from url type
+# /admin/carbrand type from form-type, then update,save or delete
+#GET           /admin/carbrand/:id                 controllers.AdminCarBrand.read(id:Long)
+#POST        /admin/carbrand                       controllers.AdminCarBrand.saveOrUpdateOrDelete()
 
 
 
