@@ -1,19 +1,12 @@
-@(carBrandForm: Form[forms.CarBrandForm])
+
+@(carBrandForm: Form[dtos.CarBrandDTO])
 
 @import helper._
 @import utils.Constants
 
 
 @main("Laikanche Admin") {
-    <br/>
 
-
-
-    @if(carBrandForm.hasGlobalErrors) {
-        <p class="error">
-        @carBrandForm.globalError().message()
-        </p>
-    }
 
 
 

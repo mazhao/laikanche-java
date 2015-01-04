@@ -1,10 +1,12 @@
 package controllers;
 
 import com.avaje.ebean.Ebean;
-import forms.CarBrandForm;
+import controllers.routes;
+import dtos.CarBrandDTO;
 import models.*;
 import play.data.Form;
-import play.mvc.*;
+import play.mvc.Controller;
+import play.mvc.Result;
 import utils.Constants;
 
 import java.util.List;
@@ -13,7 +15,7 @@ import java.util.List;
  * Created by mazhao on 15/1/1.
  */
 public class AdminCarBrand extends Controller {
-    private static Form<CarBrandForm> carBrandFormFactory = Form.form(CarBrandForm.class);
+    private static Form<CarBrandDTO> carBrandFormFactory = Form.form(CarBrandDTO.class);
 
 
     public static Result index() {
@@ -30,7 +32,7 @@ public class AdminCarBrand extends Controller {
         }
 
         // 用原值建造Form
-        CarBrandForm cbf = new CarBrandForm();
+        CarBrandDTO cbf = new CarBrandDTO();
 
         if (Constants.OP_DELETE.equalsIgnoreCase(operation) ||
                 Constants.OP_UPDATE.equalsIgnoreCase(operation) ||
@@ -50,12 +52,12 @@ public class AdminCarBrand extends Controller {
             return redirect(routes.AdminCarBrand.index()); // @todo with error message
         }
 
-        return ok(views.html.adminCarBrandRead.render(carBrandFormFactory.fill(cbf)));
+        return ok(views.html.adminCarBrandRead.render( carBrandFormFactory.fill(cbf)));
     }
 
     public static Result saveOrUpdateOrDelete() {
 
-        CarBrandForm carBrandForm = carBrandFormFactory.bindFromRequest().get();
+        CarBrandDTO carBrandForm = carBrandFormFactory.bindFromRequest().get();
 
         if (Constants.OP_CREATE.equalsIgnoreCase(carBrandForm.operationCode)) {
             // create
