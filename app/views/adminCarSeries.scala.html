@@ -1,0 +1,44 @@
+@(carSeriesList: List[CarSeries])
+
+@main("Laikanche Admin") {
+
+
+    <div class="panel panel-default " style="margin-top : 10 px" ;>
+        <div class="panel-heading">汽车车系管理</div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>品牌名称</th>
+                        <th>车系名称</th>
+                        <th>修改</th>
+                        <th>删除</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                @for(carSeries <- carSeriesList) {
+
+                    <tr>
+                        <th scope="row">@carSeries.id</th>
+                        <td><a href="/admin/carbrand/@carSeries.carBrand.id/read" target="_blank"> @carSeries.carBrand.name </a></td>
+                        <td><a href="/admin/carseries/@carSeries.id/read">@carSeries.name</a></td>
+                        <td><a href="/admin/carseries/@carSeries.id/update">修改</a></td>
+                        <td><a href="/admin/carseries/@carSeries.id/delete">删除</a></td>
+                    </tr>
+
+
+                }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="panel-footer">
+            <a class="btn btn-info" href="/admin/carseries/0/create">添加新车系</a>
+        </div>
+
+    </div>
+
+
+}

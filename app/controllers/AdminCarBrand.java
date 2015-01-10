@@ -70,10 +70,8 @@ public class AdminCarBrand extends Controller {
             Ebean.save(carBrand);
 
         } else if (Constants.OP_DELETE.equalsIgnoreCase(carBrandForm.operationCode)) {
-
-            // @todo check sub modules not exist
+            //@todo check dependencies before delete
             Ebean.delete(CarBrand.class, carBrandForm.id);
-
         } else if (Constants.OP_UPDATE.equalsIgnoreCase(carBrandForm.operationCode)) {
             CarBrand carBrand = Ebean.find(CarBrand.class, carBrandForm.id);
             carBrand.name = carBrandForm.name;

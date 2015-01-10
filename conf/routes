@@ -59,4 +59,10 @@ POST          /admin/carbrand                       controllers.AdminCarBrand.sa
 
 
 
+GET           /admin/carseries                      controllers.AdminCarSeries.index()
+GET           /admin/carseries/:id/:operation        controllers.AdminCarSeries.read(id:Long, operation: String)
+POST          /admin/carseries                       controllers.AdminCarSeries.saveOrUpdateOrDelete()
+
+
+
 
