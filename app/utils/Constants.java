@@ -13,5 +13,14 @@ public class Constants {
 
     public static final String OP_ERROR = "error";
 
+
+    // separator
+
+    public static final String SEPARATOR = "\\-";
+
+
+    // date format:yyyy-MM-dd HH:mm:ss
+    public static final String DATE_FORMAT_YYYYMMDD_HHMMSS = "yyyy-MM-dd HH:mm:ss";
+
     private Constants() {}
 }

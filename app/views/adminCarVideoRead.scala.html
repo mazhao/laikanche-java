@@ -1,0 +1,116 @@
+@(carVideoForm: Form[dtos.CarVideoDTO])
+
+@import utils.Constants
+@import utils.Tools
+
+@main("Laikanche Admin") {
+
+
+    @helper.form(action = routes.AdminCarVideo.saveOrUpdateOrDelete(), 'class -> "form-horizontal") {
+
+
+        @if(Constants.OP_READ.equalsIgnoreCase(carVideoForm.get().operationCode) ||
+                Constants.OP_UPDATE.equalsIgnoreCase(carVideoForm.get().operationCode) ||
+                Constants.OP_DELETE.equalsIgnoreCase(carVideoForm.get().operationCode)
+
+        ) {
+
+            <div class="form-group">
+                <label for="id" class="col-sm-2 control-label"> 车评视频唯一标志</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="id" name="id" placeholder="" value="@carVideoForm.get().id" readonly>
+                </div>
+            </div>
+
+        }
+
+        <div class="form-group">
+            <label for="carBrandIdAndSeriesId" class="col-sm-2 control-label">汽车品牌-汽车系列</label>
+            <div class="col-sm-10">
+                <select name="carBrandIdAndSeriesId" id="carBrandIdAndSeriesId" class="form-control">
+
+                @for(carSeries <- carVideoForm.get().carSeriesList) {
+                    @carSeries.carBrand.name - @carSeries.name
+
+                    @if(carVideoForm.get().carBrandIdAndSeriesId.equalsIgnoreCase(Tools.brandAndSeries(carSeries.carBrand.id, carSeries.id))) {
+                        <option value="@carSeries.carBrand.id-@carSeries.id" selected>@carSeries.carBrand.name - @carSeries.name</option>
+                    } else {
+                        <option value="@carSeries.carBrand.id-@carSeries.id">@carSeries.carBrand.name - @carSeries.name</option>
+                    }
+
+                }
+
+                </select>
+            </div>
+        </div>
+
+
+
+
+        <div class="form-group">
+            <label for="title" class="col-sm-2 control-label">视频名称</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="title" name="title" placeholder="请输入汽车视频名称" value="@carVideoForm.get().title">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="fromWeb" class="col-sm-2 control-label">视频来源</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="fromWeb" name="fromWeb" placeholder="请输入汽车品牌名称" value="@carVideoForm.get().fromWeb">
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label for="url" class="col-sm-2 control-label">汽车视频连接地址</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="url" name="url" placeholder="请输入汽车品牌名称" value="@carVideoForm.get().url">
+            </div>
+        </div>
+
+
+        @if(Constants.OP_READ.equalsIgnoreCase(carVideoForm.get().operationCode) ||
+                Constants.OP_UPDATE.equalsIgnoreCase(carVideoForm.get().operationCode) ||
+                Constants.OP_DELETE.equalsIgnoreCase(carVideoForm.get().operationCode)
+
+        ) {
+
+            <div class="form-group">
+                <label for="createDate" class="col-sm-2 control-label"> 创建时间 </label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="createDate" name="createDate" placeholder="" value="@carVideoForm.get().createDate" readonly>
+                </div>
+            </div>
+
+        }
+
+
+        <div class="form-group">
+            <label for="operationCode" class="col-sm-2 control-label"> 操作类型 </label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="operationCode" name="operationCode" placeholder="" value="@carVideoForm.get().operationCode" readonly>
+            </div>
+        </div>
+
+        <div class="col-sm-offset-2 col-sm-10">
+            @if(Constants.OP_CREATE.equalsIgnoreCase(carVideoForm.get().operationCode)) {
+                <button type="submit" class="btn btn-default">保存</button>
+            }
+
+            @if(Constants.OP_READ.equalsIgnoreCase(carVideoForm.get().operationCode)) {
+                <button type="submit" class="btn btn-default">关闭</button>
+            }
+
+            @if(Constants.OP_UPDATE.equalsIgnoreCase(carVideoForm.get().operationCode)) {
+                <button type="submit" class="btn btn-default">保存</button>
+            }
+
+            @if(Constants.OP_DELETE.equalsIgnoreCase(carVideoForm.get().operationCode)) {
+                <button type="submit" class="btn btn-default">删除</button>
+            }
+
+        </div>
+
+    }
+}
