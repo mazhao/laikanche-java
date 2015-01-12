@@ -1,4 +1,4 @@
-@(message: String)
+@(carVideoList: List[CarVideo])
 
 <html>
     <head>
@@ -11,7 +11,7 @@
         <script src="@routes.Assets.at("javascripts/ie-emulation-modes-warning.js")" type="text/javascript"></script>
 
 
-        <!-- bootstrap begin -->
+            <!-- bootstrap begin -->
             <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
             <!-- Optional theme -->
@@ -43,6 +43,27 @@
                 <p class="lead">来看车立志要做中国最专业的视频汽车测试网站，现广发英雄帖，招纳各路爱车英雄：资深汽车发烧友，资深汽车专家，各路技术大拿。有意请把简历发送到：hr#laikanche.com</p>
                 <p><a class="btn btn-lg btn-success" href="#" role="button">在线申请</a></p>
             </div>
+
+
+            <div class="row">
+
+                @for(carVideo <- carVideoList) {
+
+                    <div class="col-lg-4">
+
+                        <h1><a href="@carVideo.url" target="_blank">@carVideo.title</a></h1>
+
+                        由 @carVideo.reporter 在 @carVideo.createDate 创建。 来源于：@carVideo.fromWeb  <br/>
+                        好评：@carVideo.countGood <br/>
+                        差评：@carVideo.countBad <br/>
+                        品牌：@carVideo.carSeries.carBrand.name <br/>
+                        车系：@carVideo.carSeries.name <br/>
+
+                    这是一行视频！
+                    </div>
+                }
+            </div>
+
 
                 <!-- Example row of columns -->
             <div class="row">
