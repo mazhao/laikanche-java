@@ -35,6 +35,8 @@ public class CarVideoDTO {
 
     public Long countBad;  // 差评数：20
 
+    public String screenFileName;
+
     // -- operation code --
     public String operationCode;
 

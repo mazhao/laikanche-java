@@ -52,6 +52,11 @@ GET           /admin/che-gotoadd                     controllers.AdminChe.gotoAd
 #   car brand
 #  ------------------------------------
 
+# 通用 Controller
+
+GET           /file/:name                            controllers.CommonFileController.index(name: String)
+
+
 
 # to car brand list
 GET           /admin/carbrand                        controllers.AdminCarBrand.index()

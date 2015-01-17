@@ -1,5 +1,7 @@
 @(carVideoList: List[CarVideo])
 
+@import  utils.Tools
+
 <html>
     <head>
         <title>来看车 - 最权威的汽车视频测试网站 </title>
@@ -24,7 +26,7 @@
         <div class="container">
 
             <div class="masthead">
-                <h1> 来看车 - <span class="text-muted">最权威的汽车视频测试网站</span></h1>
+                <h2> 来看车 - <small>最权威的汽车视频测试网站</small></h2>
                 <nav>
                     <ul class="nav nav-justified">
                         <li class="active"><a href="#">评测视频</a></li>
@@ -51,19 +53,27 @@
 
                     <div class="col-lg-4">
 
-                        <h1><a href="@carVideo.url" target="_blank">@carVideo.title</a></h1>
 
-                        由 @carVideo.reporter 在 @carVideo.createDate 创建。 来源于：@carVideo.fromWeb  <br/>
-                        好评：@carVideo.countGood <br/>
-                        差评：@carVideo.countBad <br/>
-                        品牌：@carVideo.carSeries.carBrand.name <br/>
-                        车系：@carVideo.carSeries.name <br/>
+                        <div class="panel panel-default">
+                            <div class="panel-heading" style="overflow: hidden; height :100px ;">
+                                <h3><a href="@carVideo.url" target="_blank">@carVideo.title</a></h3>
+                            </div>
+                            <div class="panel-body" style="text-align: center">
+                                <img src="http://@request().host()/file/@carVideo.screenFileName" class="img-rounded"  width="320px" height="240px">
+                            </div>
+                            <div class="panel-footer">
+                                <br/>由 @carVideo.reporter 在 @Tools.formatYYYYMMDDHHMMSS(carVideo.createDate) 创建。 来源于：@carVideo.fromWeb  <br/>
+                                好评：@carVideo.countGood 差评：@carVideo.countBad <br/>
+                                品牌：@carVideo.carSeries.carBrand.name 车系：@carVideo.carSeries.name <br/>
+                            </div>
+                        </div>
 
-                    这是一行视频！
                     </div>
                 }
             </div>
 
+
+            @**
 
                 <!-- Example row of columns -->
             <div class="row">
@@ -86,6 +96,9 @@
                     <p><a class="btn btn-primary" href="#" role="button">更多内容 »</a></p>
                 </div>
             </div>
+
+            **@
+
 
                 <!-- Site footer -->
             <footer class="footer">

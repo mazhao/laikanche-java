@@ -48,6 +48,12 @@ public class CarVideo {
     @Constraints.Required
     public Long countBad;  // 差评数：20
 
+    @Constraints.Required
+    public String screenFileContentType;
+
+    @Constraints.Required
+    public String screenFileName;
+
     public static Model.Finder<Long, CarVideo> find = new Model.Finder<Long, CarVideo>(
             Long.class, CarVideo.class
     );

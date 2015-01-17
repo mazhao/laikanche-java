@@ -1,6 +1,6 @@
 @(carVideoList: List[CarVideo])
 
-@import utils.Tools
+    @import utils.Tools
 
     @main("Laikanche Admin") {
 
@@ -13,8 +13,9 @@
                             <th>#</th>
                             <th>品牌</th>
                             <th>车系</th>
-
                             <th>标题</th>
+                            <th>截图</th>
+
                             <th>来源</th>
                             <th>URL</th>
                             <th>好评数</th>
@@ -37,13 +38,18 @@
                             <td> <a href="/admin/carseries/@carVideo.carSeries.id/read" target="_blank"> @carVideo.carSeries.name </a> </td>
 
                             <td> <a href="/admin/carvideo/@carVideo.id/read" target="_blank"> @carVideo.title </a> </td>
+
+                            <td>
+                                <img src="http://@request().host()/file/@carVideo.screenFileName" width="150px" height="100px">
+                            </td>
+
                             <td> @carVideo.fromWeb </td>
                             <td> @carVideo.url </td>
                             <td> @carVideo.countGood </td>
                             <td> @carVideo.countBad </td>
 
                             <td> @carVideo.reporter </td>
-                            <td> @Tools.formatYYYYMMDDHHMMSS( carVideo.createDate ) </td>
+                            <td> @Tools.formatYYYYMMDDHHMMSS(carVideo.createDate) </td>
 
                             <td><a href="/admin/carvideo/@carVideo.id/update">修改</a></td>
                             <td><a href="/admin/carvideo/@carVideo.id/delete">删除</a></td>
@@ -60,8 +66,6 @@
             </div>
 
         </div>
-
-
 
 
     }

@@ -2,12 +2,12 @@ package controllers;
 
 import com.avaje.ebean.Ebean;
 import dtos.CarVideoDTO;
-import models.CarBrand;
 import models.CarSeries;
 import models.CarVideo;
 import play.Logger;
 import play.data.Form;
 import play.mvc.Controller;
+import play.mvc.Http;
 import play.mvc.Result;
 import utils.Constants;
 import utils.Tools;
@@ -56,6 +56,8 @@ public class AdminCarVideo extends Controller {
             carVideoDTO.url = carVideo.url;
             carVideoDTO.reporter = carVideo.reporter;
             carVideoDTO.id = carVideo.id;
+            carVideoDTO.screenFileName = carVideo.screenFileName;
+
 
             carVideoDTO.operationCode = operation;
 
@@ -90,6 +92,14 @@ public class AdminCarVideo extends Controller {
                 Logger.debug("car series object:" + Ebean.find(CarSeries.class, seriesId));
             }
 
+            // 汽车视频截图保留位置
+            Http.MultipartFormData.FilePart filePart = request().body().asMultipartFormData().getFile("screen");
+            if(filePart != null && filePart.getFile()!= null) {
+                String uniqueFilePath = Tools.saveFileToStore(filePart.getFile(), filePart.getFilename());
+                carVideo.screenFileName = Tools.removePath(uniqueFilePath);
+                carVideo.screenFileContentType = filePart.getContentType();
+            }
+
             carVideo.carSeries = Ebean.find(CarSeries.class, seriesId);
 
             // init
@@ -119,8 +129,20 @@ public class AdminCarVideo extends Controller {
             carVideo.createDate = Tools.parseYYYYMMDDHHMMSS(  carVideoDTO.createDate );
             carVideo.reporter = "拖拉机"; // @todo set user by session
 
+            // 汽车视频截图保留位置
+            Http.MultipartFormData.FilePart filePart = request().body().asMultipartFormData().getFile("screen");
+            if(filePart != null && filePart.getFile()!= null) {
+                String uniqueFilePath = Tools.saveFileToStore(filePart.getFile(), filePart.getFilename());
+                carVideo.screenFileName = Tools.removePath(uniqueFilePath);
+                carVideo.screenFileContentType = filePart.getContentType();
+            }
+            carVideo.carSeries = Ebean.find(CarSeries.class, seriesId);
+
+
             Ebean.update(carVideo);
 
+        } else if(Constants.OP_DELETE.equalsIgnoreCase(carVideoDTO.operationCode)) {
+            Ebean.delete(CarVideo.class, carVideoDTO.id);
         }
 
         return ok(views.html.adminCarVideo.render(CarVideo.find.all()));
