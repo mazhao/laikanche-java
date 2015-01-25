@@ -1,4 +1,4 @@
-@(carVideoList: List[CarVideo])
+@(carVideoList: List[CarVideo])(carBrandList: List[CarBrand] )
 
 @import  utils.Tools
 
@@ -40,19 +40,31 @@
             </div>
 
                 <!-- Jumbotron -->
+            @**
             <div class="jumbotron">
                 <h1>广发英雄帖</h1>
                 <p class="lead">来看车立志要做中国最专业的视频汽车测试网站，现广发英雄帖，招纳各路爱车英雄：资深汽车发烧友，资深汽车专家，各路技术大拿。有意请把简历发送到：hr#laikanche.com</p>
                 <p><a class="btn btn-lg btn-success" href="#" role="button">在线申请</a></p>
             </div>
 
+            **@
+            <br/>
+
+
+            <div class="panel panel-default">
+                <div class="panel-heading">品牌</div>
+                <div class="panel-body">
+                @for(carBrand <- carBrandList) {
+                    <a class="btn btn-default" href="http://@request().host()/@carBrand.id" role="button">@carBrand.name</a>
+                }
+                </div>
+            </div>
 
             <div class="row">
 
                 @for(carVideo <- carVideoList) {
 
                     <div class="col-lg-4">
-
 
                         <div class="panel panel-default">
                             <div class="panel-heading" style="overflow: hidden; height :100px ;">
@@ -103,6 +115,8 @@
                 <!-- Site footer -->
             <footer class="footer">
                 <p>© 来看车（LaiKanChe） 2015</p>
+
+                <a href="http://@request().host()/admin/home" target="_blank"> 进入管理后台 </a>
             </footer>
 
         </div>
