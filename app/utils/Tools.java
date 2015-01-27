@@ -3,6 +3,7 @@ package utils;
 import org.springframework.util.FileSystemUtils;
 import play.Logger;
 import play.Play;
+import play.mvc.Http;
 
 import java.io.File;
 import java.io.IOException;
@@ -117,6 +118,35 @@ public class Tools {
     public static File getFileFromStore(String name) {
         String fullFilePathInStore = Tools.getFullFilePathInStore(name);
         return new File(fullFilePathInStore);
+    }
+
+    public static boolean isAdmin(String name, String password) {
+        return "拖拉机".equals(name) && "1234567890".equals(password);
+    }
+
+
+    public static final boolean isAdminUri(String uri) {
+        return uri != null && uri.startsWith(Constants.ADMIN_URL_PREFIX);
+    }
+
+    public static void setAdminLogin(Http.Session session, String name) {
+        session.put(Constants.SESSION_ADMIN_LOGIN, Constants.SESSION_ADMIN_LOGIN_TRUE);
+        session.put(Constants.SESSION_ADMIN_NAME, name);
+    }
+
+    public static void clearAdminLogin(Http.Session session) {
+        session.remove(Constants.SESSION_ADMIN_LOGIN);
+        session.remove(Constants.SESSION_ADMIN_NAME);
+    }
+
+    public static boolean hasAdminLogin(Http.Session session) {
+        String adminLogin = session.get(Constants.SESSION_ADMIN_LOGIN);
+        if(Constants.SESSION_ADMIN_LOGIN_TRUE.equalsIgnoreCase(adminLogin)) {
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
     public static void main(String[] args) {

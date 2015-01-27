@@ -1,5 +1,6 @@
 package controllers;
 
+import actions.AdminAuthAction;
 import com.avaje.ebean.Ebean;
 import dtos.CarVideoDTO;
 import models.CarSeries;
@@ -9,6 +10,7 @@ import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Result;
+import play.mvc.With;
 import utils.Constants;
 import utils.Tools;
 
@@ -17,6 +19,7 @@ import java.util.Date;
 /**
  * Created by mazhao on 15/1/10.
  */
+@With(AdminAuthAction.class)
 public class AdminCarVideo extends Controller {
 
     private static Form<CarVideoDTO> carVideoFormFactory = Form.form(CarVideoDTO.class);

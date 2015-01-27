@@ -1,4 +1,4 @@
-@(carVideoList: List[CarVideo])(carBrandList: List[CarBrand] )
+@(carVideoList: List[CarVideo])(carBrandList: List[CarBrand] )(currentBrandId: Long)
 
 @import  utils.Tools
 
@@ -26,7 +26,7 @@
         <div class="container">
 
             <div class="masthead">
-                <h2> 来看车 - <small>最权威的汽车视频测试网站</small></h2>
+                <h2>  <a href="http://@request().host()"> 来看车 - <small>最权威的汽车视频测试网站</small> </a></h2>
                 <nav>
                     <ul class="nav nav-justified">
                         <li class="active"><a href="#">评测视频</a></li>
@@ -54,8 +54,21 @@
             <div class="panel panel-default">
                 <div class="panel-heading">品牌</div>
                 <div class="panel-body">
-                @for(carBrand <- carBrandList) {
-                    <a class="btn btn-default" href="http://@request().host()/@carBrand.id" role="button">@carBrand.name</a>
+
+                    @if(0 == currentBrandId) {
+                        <a class="btn btn-success" href="http://@request().host()" role="button">全部</a>
+                    } else {
+                        <a class="btn btn-default" href="http://@request().host()" role="button">全部</a>
+                    }
+
+
+                    @for(carBrand <- carBrandList) {
+
+                    @if(carBrand.id == currentBrandId) {
+                        <a class="btn btn-success" href="http://@request().host()/@carBrand.id" role="button">@carBrand.name</a>
+                    } else {
+                        <a class="btn btn-default" href="http://@request().host()/@carBrand.id" role="button">@carBrand.name</a>
+                    }
                 }
                 </div>
             </div>
@@ -76,7 +89,8 @@
                             <div class="panel-footer">
                                 <br/>由 @carVideo.reporter 在 @Tools.formatYYYYMMDDHHMMSS(carVideo.createDate) 创建。 来源于：@carVideo.fromWeb  <br/>
                                 好评：@carVideo.countGood 差评：@carVideo.countBad <br/>
-                                品牌：@carVideo.carSeries.carBrand.name 车系：@carVideo.carSeries.name <br/>
+                                品牌：<a href="http://@request().host()/@carVideo.carSeries.carBrand.id">@carVideo.carSeries.carBrand.name</a>
+                                车系：@carVideo.carSeries.name <br/>
                             </div>
                         </div>
 

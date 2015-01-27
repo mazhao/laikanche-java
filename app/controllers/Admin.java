@@ -6,6 +6,8 @@ import play.data.Form;
 import play.mvc.*;  // java -> play.mvc; scala -> play.api.*
 
 
+import utils.Constants;
+import utils.Tools;
 import views.html.*; // files in views folder
 
 /**
@@ -40,9 +42,23 @@ public class Admin extends Controller {
             Logger.debug("input password:" + adminLoginDTO.password);
         }
 
-        return ok(
-               views.html.admin.render("ok")
-        );
+        if(Tools.isAdmin(adminLoginDTO.name, adminLoginDTO.password)) {
+            Tools.setAdminLogin(session(), adminLoginDTO.name);
+            return ok(
+                    views.html.admin.render("ok")
+            );
+        } else {
+            return ok(
+                    views.html.adminLogin.render(adminLoginDTOFormFactory.fill(adminLoginDTO))
+            );
+        }
+    }
 
+
+    public static Result logout() {
+        Tools.clearAdminLogin(session());
+        return ok(
+                views.html.adminLogin.render(adminLoginDTOFormFactory.fill(new AdminLoginDTO()))
+        );
     }
 }

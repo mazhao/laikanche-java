@@ -1,5 +1,6 @@
 package controllers;
 
+import actions.AdminAuthAction;
 import com.avaje.ebean.Ebean;
 import dtos.CarSeriesDTO;
 import models.CarBrand;
@@ -8,6 +9,7 @@ import play.Logger;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.With;
 import utils.Constants;
 
 import java.util.List;
@@ -15,6 +17,7 @@ import java.util.List;
 /**
  * Created by mazhao on 15/1/10.
  */
+@With(AdminAuthAction.class)
 public class AdminCarSeries extends Controller {
 
     private static Form<CarSeriesDTO> carSeriesFormFactory = Form.form(CarSeriesDTO.class);

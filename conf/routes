@@ -8,14 +8,14 @@
 #
 
 # Home page
-GET            /                                      controllers.Application.index(brandId: Long = 0)
-GET            /:brandId                              controllers.Application.index(brandId: Long )
+GET           /                                      controllers.Application.index(brandId: Long = 0)
+GET           /:brandId                              controllers.Application.index(brandId: Long )
 
 
 #
 
 # Map static resources from the /public folder to the /assets URL path
-GET            /assets/*file                          controllers.Assets.at(path="/public", file)
+GET           /assets/*file                          controllers.Assets.at(path="/public", file)
 
 
 
@@ -25,12 +25,12 @@ GET            /assets/*file                          controllers.Assets.at(path
 #
 # get       /admin  -> admin 页面
 
-GET            /admin/login                           controllers.Admin.gotoLogin()
-POST           /admin/login                           controllers.Admin.login()
+GET           /admin/login                           controllers.Admin.gotoLogin()
+POST          /admin/login                           controllers.Admin.login()
+GET           /admin/logout                          controllers.Admin.logout()
 
 
-
-GET            /admin/home                            controllers.Admin.index()
+GET           /admin/home                            controllers.Admin.index()
 
 #
 # che CRUD
@@ -43,13 +43,13 @@ GET            /admin/home                            controllers.Admin.index()
 # get       /admin/che/$id  -> read
 # delete    /admin/che/$id  -> delete
 
-GET            /admin/che                             controllers.AdminChe.index()
-GET            /admin/che/:id                         controllers.AdminChe.read(id : Long)
-GET            /admin/che/:id/edit                    controllers.AdminChe.edit(id: Long)
-POST           /admin/che                             controllers.AdminChe.save()
-DELETE         /admin/che/:id                         controllers.AdminChe.delete(id: Long)
+GET           /admin/che                             controllers.AdminChe.index()
+GET           /admin/che/:id                         controllers.AdminChe.read(id : Long)
+GET           /admin/che/:id/edit                    controllers.AdminChe.edit(id: Long)
+POST          /admin/che                             controllers.AdminChe.save()
+DELETE        /admin/che/:id                         controllers.AdminChe.delete(id: Long)
 
-GET            /admin/che-gotoadd                     controllers.AdminChe.gotoAdd()
+GET           /admin/che-gotoadd                     controllers.AdminChe.gotoAdd()
 
 # car brand begin
 
@@ -60,34 +60,34 @@ GET            /admin/che-gotoadd                     controllers.AdminChe.gotoA
 
 # 通用 Controller
 
-GET            /file/:name                            controllers.CommonFileController.index(name: String)
+GET           /file/:name                            controllers.CommonFileController.index(name: String)
 
 
 
 # to car brand list
-GET            /admin/carbrand                        controllers.AdminCarBrand.index()
+GET           /admin/carbrand                        controllers.AdminCarBrand.index()
 
 # smple the load & save
 # /admin/carbrand/:id/:type type for new,update,delete
 # html submit name with form-type value from url type
 # /admin/carbrand type from form-type, then update,save or delete
-GET            /admin/carbrand/:id/:operation         controllers.AdminCarBrand.read(id:Long, operation: String)
-POST           /admin/carbrand                        controllers.AdminCarBrand.saveOrUpdateOrDelete()
+GET           /admin/carbrand/:id/:operation         controllers.AdminCarBrand.read(id:Long, operation: String)
+POST          /admin/carbrand                        controllers.AdminCarBrand.saveOrUpdateOrDelete()
 
 #  ------------------------------------
 #   car series
 #  ------------------------------------
-GET            /admin/carseries                       controllers.AdminCarSeries.index()
-GET            /admin/carseries/:id/:operation        controllers.AdminCarSeries.read(id:Long, operation: String)
-POST           /admin/carseries                       controllers.AdminCarSeries.saveOrUpdateOrDelete()
+GET           /admin/carseries                       controllers.AdminCarSeries.index()
+GET           /admin/carseries/:id/:operation        controllers.AdminCarSeries.read(id:Long, operation: String)
+POST          /admin/carseries                       controllers.AdminCarSeries.saveOrUpdateOrDelete()
 
 
 #  ------------------------------------
 #   car video
 #  ------------------------------------
-GET            /admin/carvideo                        controllers.AdminCarVideo.index()
-GET            /admin/carvideo/:id/:operation         controllers.AdminCarVideo.read(id:Long, operation: String)
-POST           /admin/carvideo                        controllers.AdminCarVideo.saveOrUpdateOrDelete()
+GET           /admin/carvideo                        controllers.AdminCarVideo.index()
+GET           /admin/carvideo/:id/:operation         controllers.AdminCarVideo.read(id:Long, operation: String)
+POST          /admin/carvideo                        controllers.AdminCarVideo.saveOrUpdateOrDelete()
 
 
 

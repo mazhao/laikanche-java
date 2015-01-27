@@ -27,6 +27,12 @@ public class Constants {
     public static final String DATE_FORMAT_YYYYMMDD_HHMMSS = "yyyy-MM-dd HH:mm:ss";
 
 
+    public static final String ADMIN_URL_PREFIX = "/admin/";
+
+
+    public static final String SESSION_ADMIN_NAME = "admin.name";
+    public static final String SESSION_ADMIN_LOGIN = "admin.login";
+    public static final String SESSION_ADMIN_LOGIN_TRUE = "true";
 
     private Constants() {}
 }

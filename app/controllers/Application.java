@@ -20,8 +20,9 @@ public class Application extends Controller {
             Logger.debug("enter brand id:" + brandId);
         }
 
-        List<CarVideo> carVideoList = new ArrayList<CarVideo>();
+        // @todo add cache here
 
+        List<CarVideo> carVideoList = null;
         List<CarBrand> carBrandList = CarBrand.find.all();
 
 
@@ -42,7 +43,7 @@ public class Application extends Controller {
 
         }
 
-        return ok(index.render(carVideoList, carBrandList));
+        return ok( views.html.index.render(carVideoList, carBrandList, brandId));
     }
 
 }
