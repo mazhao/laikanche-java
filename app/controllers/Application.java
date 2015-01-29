@@ -22,26 +22,19 @@ public class Application extends Controller {
 
         // @todo add cache here
 
-        List<CarVideo> carVideoList = null;
+        // step 1 get car brand list
         List<CarBrand> carBrandList = CarBrand.find.all();
 
-
+        // step 2 get car video list
+        Query<CarVideo> queryObject = null;
         if (brandId == 0) {
-            carVideoList = CarVideo.find.all();
+            queryObject =  CarVideo.find.orderBy().desc("createDate");
         } else {
             String query = "find carVideo where carSeries.carBrand.id = :brandId";
-
-
-            Query<CarVideo> queryCarVideo = CarVideo.find.setQuery(query).setParameter("brandId", brandId);
-
-//            if(Logger.isDebugEnabled()) {
-//                Logger.debug("generate sql:" + queryCarVideo.getGeneratedSql());
-//            }
-
-
-            carVideoList = queryCarVideo.findList();
-
+            queryObject = CarVideo.find.setQuery(query).setParameter("brandId", brandId).orderBy().desc("createDate");
         }
+
+        List<CarVideo> carVideoList = queryObject.findList();
 
         return ok( views.html.index.render(carVideoList, carBrandList, brandId));
     }

@@ -25,7 +25,7 @@ public class Constants {
 
     // date format:yyyy-MM-dd HH:mm:ss
     public static final String DATE_FORMAT_YYYYMMDD_HHMMSS = "yyyy-MM-dd HH:mm:ss";
-
+    public static final String DATE_FORMAT_YYYYMMDD = "yyyyMMDD";
 
     public static final String ADMIN_URL_PREFIX = "/admin/";
 

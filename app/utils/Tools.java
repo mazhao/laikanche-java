@@ -59,6 +59,7 @@ public class Tools {
 
 
     private static final java.text.DateFormat dfYYYYMMDDHHMMSS = new java.text.SimpleDateFormat(Constants.DATE_FORMAT_YYYYMMDD_HHMMSS);
+    private static final java.text.DateFormat dfYYYYMMDD = new java.text.SimpleDateFormat(Constants.DATE_FORMAT_YYYYMMDD);
 
     public static String formatYYYYMMDDHHMMSS(Date date) {
 
@@ -72,6 +73,11 @@ public class Tools {
             e.printStackTrace();
             return new Date();
         }
+    }
+
+
+    public static final boolean isSameDay(Date date1, Date date2) {
+        return date1 != null && date2 != null && dfYYYYMMDD.format(date1).equals(dfYYYYMMDD.format(date2));
     }
 
 
@@ -148,6 +154,9 @@ public class Tools {
         }
 
     }
+
+
+
 
     public static void main(String[] args) {
         Logger.debug("brand:" + Tools.brand("1-1"));

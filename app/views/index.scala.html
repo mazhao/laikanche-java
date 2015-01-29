@@ -90,7 +90,11 @@
                                 <br/>由 @carVideo.reporter 在 @Tools.formatYYYYMMDDHHMMSS(carVideo.createDate) 创建。 来源于：@carVideo.fromWeb  <br/>
                                 好评：@carVideo.countGood 差评：@carVideo.countBad <br/>
                                 品牌：<a href="http://@request().host()/@carVideo.carSeries.carBrand.id">@carVideo.carSeries.carBrand.name</a>
-                                车系：@carVideo.carSeries.name <br/>
+                                车系：@carVideo.carSeries.name
+                                @if(Tools.isSameDay(carVideo.createDate, new Date())) {
+                                    <span class="label label-success">每日上新</span>
+
+                                }<br/>
                             </div>
                         </div>
 
