@@ -1,0 +1,2 @@
+sed -i 's/@request().host()/laikanche.com/g' *.txt
+
