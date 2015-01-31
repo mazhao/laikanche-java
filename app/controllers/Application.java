@@ -1,12 +1,14 @@
 package controllers;
 
 import com.avaje.ebean.Ebean;
+import com.avaje.ebean.PagingList;
 import com.avaje.ebean.Query;
 import models.CarBrand;
 import models.CarVideo;
 import play.*;
 import play.mvc.*;
 
+import utils.Constants;
 import views.html.*;
 
 import java.util.ArrayList;
@@ -15,6 +17,13 @@ import java.util.List;
 public class Application extends Controller {
 
     public static Result index(Long brandId) {
+
+        // get current page if not then ist page
+        String pageStr = request().getQueryString("page");
+        int page = 0;
+        if(pageStr != null) {
+            page = Integer.parseInt(pageStr) - 1;
+        }
 
         if(Logger.isDebugEnabled()) {
             Logger.debug("enter brand id:" + brandId);
@@ -34,9 +43,16 @@ public class Application extends Controller {
             queryObject = CarVideo.find.setQuery(query).setParameter("brandId", brandId).orderBy().desc("createDate");
         }
 
-        List<CarVideo> carVideoList = queryObject.findList();
+        // paging
+        PagingList<CarVideo> carVideoPagingList = queryObject.findPagingList(Constants.COUNT_PER_PAGE);
 
-        return ok( views.html.index.render(carVideoList, carBrandList, brandId));
+        int totalPageCount = carVideoPagingList.getTotalPageCount();
+
+        int currentPage = page;
+
+        List<CarVideo> carVideoList = carVideoPagingList.getPage(currentPage).getList();
+
+        return ok( views.html.index.render(carVideoList, carBrandList, brandId, totalPageCount, currentPage));
     }
 
 }

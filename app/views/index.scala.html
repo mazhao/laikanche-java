@@ -1,4 +1,4 @@
-@(carVideoList: List[CarVideo])(carBrandList: List[CarBrand] )(currentBrandId: Long)
+@(carVideoList: List[CarVideo])(carBrandList: List[CarBrand] )(currentBrandId: Long)(totalPageCount: Integer)(currentPage: Integer)
 
 @import  utils.Tools
 
@@ -87,9 +87,10 @@
                                 <img src="http://@request().host()/file/@carVideo.screenFileName" class="img-rounded"  width="320px" height="240px">
                             </div>
                             <div class="panel-footer">
-                                <br/>由 @carVideo.reporter 在 @Tools.formatYYYYMMDDHHMMSS(carVideo.createDate) 创建。 来源于：@carVideo.fromWeb  <br/>
-                                好评：@carVideo.countGood 差评：@carVideo.countBad <br/>
-                                品牌：<a href="http://@request().host()/@carVideo.carSeries.carBrand.id">@carVideo.carSeries.carBrand.name</a>
+                                <br/>由 @carVideo.reporter 在 @Tools.formatYYYYMMDDHHMMSS(carVideo.createDate) 创建。
+                                <br/>来源于：<a href="@carVideo.fromWeb" target="_blank">@carVideo.fromWeb</a>
+                                <br/>好评：@carVideo.countGood 差评：@carVideo.countBad
+                                <br/>品牌：<a href="http://@request().host()/@carVideo.carSeries.carBrand.id">@carVideo.carSeries.carBrand.name</a>
                                 车系：@carVideo.carSeries.name
                                 @if(Tools.isSameDay(carVideo.createDate, new Date())) {
                                     <span class="label label-success">每日上新</span>
@@ -101,7 +102,26 @@
                     </div>
                 }
             </div>
+            <div class="row">
+            <nav>
+                <ul class="pagination">
+                    <li>
+                        <a href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
 
+                    @for(i <- 1 to totalPageCount ) {
+                        <li><a href="http://@request().host()/@currentBrandId?page=@i">@i</a></li>
+                    }
+                    <li>
+                        <a href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            </div>
 
             @**
 

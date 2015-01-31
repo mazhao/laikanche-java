@@ -9,6 +9,8 @@ import java.util.UUID;
  */
 public class Constants {
 
+    public static final int COUNT_PER_PAGE = 12;
+
     // bad performance but good for read
     public static final String OP_READ = "read";
     public static final String OP_CREATE =  "create";
