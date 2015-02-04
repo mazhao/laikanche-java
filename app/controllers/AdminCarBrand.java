@@ -23,7 +23,8 @@ public class AdminCarBrand extends Controller {
 
 
     public static Result index() {
-        List<CarBrand> carBrandList = CarBrand.find.all();
+//        List<CarBrand> carBrandList = CarBrand.find.all();
+        List<CarBrand> carBrandList = CarBrand.find.orderBy().desc("name").findList();
         return ok(views.html.adminCarBrand.render(carBrandList));
     }
 

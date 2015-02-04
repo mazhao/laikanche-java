@@ -24,8 +24,7 @@ public class AdminCarSeries extends Controller {
 
     public static Result index() {
 
-        List<CarSeries> carSeriesList = CarSeries.find.all();
-
+        List<CarSeries> carSeriesList = CarSeries.find.order().desc("carBrand.name").order().desc("name").findList();
         return ok(views.html.adminCarSeries.render(carSeriesList));
     }
 
