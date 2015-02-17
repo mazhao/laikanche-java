@@ -2,9 +2,11 @@ package controllers;
 
 import actions.AdminAuthAction;
 import com.avaje.ebean.Ebean;
+import com.avaje.ebean.PagingList;
 import controllers.routes;
 import dtos.CarBrandDTO;
 import models.*;
+import play.Logger;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -24,8 +26,32 @@ public class AdminCarBrand extends Controller {
 
     public static Result index() {
 //        List<CarBrand> carBrandList = CarBrand.find.all();
-        List<CarBrand> carBrandList = CarBrand.find.orderBy().desc("name").findList();
-        return ok(views.html.adminCarBrand.render(carBrandList));
+
+        // get current page if not then ist page
+        String pageStr = request().getQueryString("page");
+        int page = 0;
+        if(pageStr != null) {
+            page = Integer.parseInt(pageStr) - 1;
+        }
+
+        PagingList<CarBrand> carBrandPagingList = CarBrand.find.orderBy().desc("name").findPagingList(Constants.COUNT_PER_PAGE);
+
+        int totalPageCount = carBrandPagingList.getTotalPageCount();
+        int currentPage = page;
+
+        List<CarBrand> carBrandList = carBrandPagingList.getPage(currentPage).getList();
+
+
+//        List<CarBrand> carBrandList = CarBrand.find.orderBy().desc("name").findList();
+
+
+
+
+        return ok(views.html.adminCarBrand.render(carBrandList, totalPageCount, currentPage));
+
+
+
+
     }
 
 

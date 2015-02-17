@@ -1,4 +1,4 @@
-@(carBrandList: List[CarBrand])
+@(carBrandList: List[CarBrand])(totalPageCount: Integer)(currentPage: Integer)
 
 @main("Laikanche Admin") {
 
@@ -28,7 +28,26 @@
 
                 }
                 </tbody>
-            </table>        </div>
+            </table>
+            <nav>
+                <ul class="pagination">
+                    <li>
+                        <a href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+
+                    @for(i <- 1 to totalPageCount ) {
+                        <li><a href="http://@request().host()/admin/carbrand?page=@i">@i</a></li>
+                    }
+                    <li>
+                        <a href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
 
         <div class="panel-footer">
             @session().get("op_message") <br/>
