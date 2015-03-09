@@ -25,8 +25,6 @@ public class AdminCarBrand extends Controller {
 
 
     public static Result index() {
-//        List<CarBrand> carBrandList = CarBrand.find.all();
-
         // get current page if not then ist page
         String pageStr = request().getQueryString("page");
         int page = 0;
@@ -41,16 +39,7 @@ public class AdminCarBrand extends Controller {
 
         List<CarBrand> carBrandList = carBrandPagingList.getPage(currentPage).getList();
 
-
-//        List<CarBrand> carBrandList = CarBrand.find.orderBy().desc("name").findList();
-
-
-
-
         return ok(views.html.adminCarBrand.render(carBrandList, totalPageCount, currentPage));
-
-
-
 
     }
 

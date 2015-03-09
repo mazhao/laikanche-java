@@ -2,6 +2,7 @@ package controllers;
 
 import actions.AdminAuthAction;
 import com.avaje.ebean.Ebean;
+import com.avaje.ebean.PagingList;
 import dtos.CarSeriesDTO;
 import models.CarBrand;
 import models.CarSeries;
@@ -24,8 +25,31 @@ public class AdminCarSeries extends Controller {
 
     public static Result index() {
 
-        List<CarSeries> carSeriesList = CarSeries.find.order().desc("carBrand.name").order().desc("name").findList();
-        return ok(views.html.adminCarSeries.render(carSeriesList));
+        // get current page if not then ist page
+        String pageStr = request().getQueryString("page");
+        int page = 0;
+        if(pageStr != null) {
+            page = Integer.parseInt(pageStr) - 1;
+        }
+
+
+//        List<CarSeries> carSeriesList = CarSeries.find.order().desc("carBrand.name").order().desc("name").findList();
+
+
+        PagingList<CarSeries> carSeriesPagingList = CarSeries.find.order().desc("carBrand.name").order().desc("name").findPagingList(Constants.COUNT_PER_PAGE);
+
+
+        int totalPageCount = carSeriesPagingList.getTotalPageCount();
+        int currentPage = page;
+
+
+        List<CarSeries> carSeriesList = carSeriesPagingList.getPage(currentPage).getList();
+
+
+        return ok(views.html.adminCarSeries.render(carSeriesList, totalPageCount, currentPage));
+
+
+
     }
 
     public static Result read(Long id, String operation) {
@@ -99,8 +123,18 @@ public class AdminCarSeries extends Controller {
             //@todo check dependencies before delete
         }
 
-        List<CarSeries> carSeriesList = CarSeries.find.all();
-        return ok(views.html.adminCarSeries.render(carSeriesList));
+
+        PagingList<CarSeries> carSeriesPagingList = CarSeries.find.order().desc("carBrand.name").order().desc("name").findPagingList(Constants.COUNT_PER_PAGE);
+
+
+        int totalPageCount = carSeriesPagingList.getTotalPageCount();
+        int currentPage = 0;
+
+
+        List<CarSeries> carSeriesList = carSeriesPagingList.getPage(currentPage).getList();
+
+
+        return ok(views.html.adminCarSeries.render(carSeriesList, totalPageCount, currentPage));
     }
 
 }

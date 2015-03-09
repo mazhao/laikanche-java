@@ -2,6 +2,7 @@ package controllers;
 
 import actions.AdminAuthAction;
 import com.avaje.ebean.Ebean;
+import com.avaje.ebean.PagingList;
 import dtos.CarVideoDTO;
 import models.CarSeries;
 import models.CarVideo;
@@ -15,6 +16,7 @@ import utils.Constants;
 import utils.Tools;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by mazhao on 15/1/10.
@@ -26,7 +28,25 @@ public class AdminCarVideo extends Controller {
 
 
     public static Result index() {
-        return ok(views.html.adminCarVideo.render(CarVideo.find.all()));
+
+        // 设置当前页码
+        String pageStr = request().getQueryString("page");
+        int page = 0;
+        if(pageStr != null) {
+            page = Integer.parseInt(pageStr) - 1;
+        }
+        PagingList<CarVideo> carVideoPagingList = CarVideo.find.order().desc("createDate").findPagingList(Constants.COUNT_PER_PAGE);
+
+
+        int totalPageCount = carVideoPagingList.getTotalPageCount();
+        int currentPage = page;
+
+
+        List<CarVideo> carVideoList = carVideoPagingList.getPage(currentPage).getList();
+
+
+
+        return ok(views.html.adminCarVideo.render(carVideoList, totalPageCount, currentPage));
     }
 
     public static Result read(Long id, String operation) {
@@ -147,7 +167,14 @@ public class AdminCarVideo extends Controller {
         } else if(Constants.OP_DELETE.equalsIgnoreCase(carVideoDTO.operationCode)) {
             Ebean.delete(CarVideo.class, carVideoDTO.id);
         }
+        PagingList<CarVideo> carVideoPagingList = CarVideo.find.order().desc("createDate").findPagingList(Constants.COUNT_PER_PAGE);
 
-        return ok(views.html.adminCarVideo.render(CarVideo.find.all()));
+
+        int totalPageCount = carVideoPagingList.getTotalPageCount();
+        int currentPage = 0;
+
+        List<CarVideo> carVideoList = carVideoPagingList.getPage(currentPage).getList();
+
+        return ok(views.html.adminCarVideo.render(carVideoList, totalPageCount, currentPage));
     }
 }
