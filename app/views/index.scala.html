@@ -30,10 +30,9 @@
                 <nav>
                     <ul class="nav nav-justified">
                         <li class="active"><a href="#">评测视频</a></li>
-                        <li><a href="#">英雄榜</a></li>
-                        <li><a href="#">抢长测</a></li>
-                        <li><a href="#">要试驾</a></li>
-                        <li><a href="#">论坛</a></li>
+                        <li><a href="#">精选饰品</a></li>
+                        <li><a href="#">精选二手车</a></li>
+                        <li><a href="#">抢试驾</a></li>
                         <li><a href="#">关于我们</a></li>
                     </ul>
                 </nav>
@@ -53,7 +52,7 @@
 
             <div class="panel panel-default">
                 <div class="panel-heading">品牌</div>
-                <div class="panel-body">
+                <div class="panel-body" >
 
                     @if(0 == currentBrandId) {
                         <a class="btn btn-success" href="http://@request().host()" role="button">全部</a>
@@ -65,9 +64,9 @@
                     @for(carBrand <- carBrandList) {
 
                     @if(carBrand.id == currentBrandId) {
-                        <a class="btn btn-success" href="http://@request().host()/@carBrand.id" role="button">@carBrand.name</a>
+                        <a style="margin-top: 1px; margin-bottom: 1px;"  class="btn btn-success" href="http://@request().host()/@carBrand.id" role="button">@carBrand.name</a>
                     } else {
-                        <a class="btn btn-default" href="http://@request().host()/@carBrand.id" role="button">@carBrand.name</a>
+                        <a style="margin-top: 1px; margin-bottom: 1px;" class="btn btn-default" href="http://@request().host()/@carBrand.id" role="button">@carBrand.name</a>
                     }
                 }
                 </div>
