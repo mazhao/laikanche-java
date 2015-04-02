@@ -5,7 +5,7 @@
 @main("Laikanche Admin") {
 
 
-    @helper.form(action = routes.AdminCarSeries.saveOrUpdateOrDelete(), 'class -> "form-horizontal") {
+    @helper.form(action = routes.AdminCarSeries.saveOrUpdateOrDelete(), 'class -> "form-horizontal", 'style -> "margin-top: 20px;") {
 
 
         @if(Constants.OP_READ.equalsIgnoreCase(carSeriesForm.get().operationCode) ||

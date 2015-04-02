@@ -1,9 +1,13 @@
-@(carBrandList: List[CarBrand])(totalPageCount: Integer)(currentPage: Integer)
+@(carBrandList: List[CarBrand])(totalPageCount: Integer)(currentPage: Integer)(message: String)
 
 @main("Laikanche Admin") {
 
-    <div class="panel panel-default " style="margin-top: 10px";>
-        <div class="panel-heading">汽车品牌管理</div>
+    <div class="panel panel-default " style="margin-top: 20px;">
+        <div class="panel-heading">汽车品牌管理
+            @if(message != null ){
+                <span class="label label-danger">@message</span>
+            }
+        </div>
         <div class="panel-body">
             <table class="table table-hover">
                 <thead>

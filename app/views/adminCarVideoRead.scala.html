@@ -6,7 +6,7 @@
 @main("Laikanche Admin") {
 
 
-    @helper.form(action = routes.AdminCarVideo.saveOrUpdateOrDelete(), 'class -> "form-horizontal", 'enctype -> "multipart/form-data") {
+    @helper.form(action = routes.AdminCarVideo.saveOrUpdateOrDelete(), 'class -> "form-horizontal", 'enctype -> "multipart/form-data", 'style -> "margin-top: 20px;") {
 
 
         @if(Constants.OP_READ.equalsIgnoreCase(carVideoForm.get().operationCode) ||

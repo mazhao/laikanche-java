@@ -39,7 +39,7 @@ public class AdminCarBrand extends Controller {
 
         List<CarBrand> carBrandList = carBrandPagingList.getPage(currentPage).getList();
 
-        return ok(views.html.adminCarBrand.render(carBrandList, totalPageCount, currentPage));
+        return ok(views.html.adminCarBrand.render(carBrandList, totalPageCount, currentPage, ""));
 
     }
 
@@ -78,7 +78,7 @@ public class AdminCarBrand extends Controller {
     public static Result saveOrUpdateOrDelete() {
 
         CarBrandDTO carBrandForm = carBrandFormFactory.bindFromRequest().get();
-
+        String message = "";
         if (Constants.OP_CREATE.equalsIgnoreCase(carBrandForm.operationCode)) {
             // create
             // form validation goes here
@@ -90,8 +90,13 @@ public class AdminCarBrand extends Controller {
             Ebean.save(carBrand);
 
         } else if (Constants.OP_DELETE.equalsIgnoreCase(carBrandForm.operationCode)) {
-            //@todo check dependencies before delete
-            Ebean.delete(CarBrand.class, carBrandForm.id);
+            List<CarSeries> carSeriesList = Ebean.find(CarSeries.class).where().eq("carBrand.id", carBrandForm.id).findList();
+            if(carSeriesList != null && carSeriesList.size() > 0) {
+                message = "不能删除车品牌：" + carBrandForm.name + "\t 原因：不能删除已经关联了车系的车品牌，请首先删除所有车系";
+
+            } else {
+                Ebean.delete(CarBrand.class, carBrandForm.id);
+            }
         } else if (Constants.OP_UPDATE.equalsIgnoreCase(carBrandForm.operationCode)) {
             CarBrand carBrand = Ebean.find(CarBrand.class, carBrandForm.id);
             carBrand.name = carBrandForm.name;
@@ -102,7 +107,14 @@ public class AdminCarBrand extends Controller {
            // @todo with error message
         }
 
-        return redirect(routes.AdminCarBrand.index());
+//        return redirect(routes.AdminCarBrand.index());
+        PagingList<CarBrand> carBrandPagingList = CarBrand.find.orderBy().desc("name").findPagingList(Constants.COUNT_PER_PAGE);
+
+        int totalPageCount = carBrandPagingList.getTotalPageCount();
+        int currentPage = 0;
+        List<CarBrand> carBrandList = carBrandPagingList.getPage(currentPage).getList();
+
+        return ok(views.html.adminCarBrand.render(carBrandList, totalPageCount, currentPage, message));
 
     }
 

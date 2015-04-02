@@ -6,6 +6,7 @@ import com.avaje.ebean.PagingList;
 import dtos.CarSeriesDTO;
 import models.CarBrand;
 import models.CarSeries;
+import models.CarVideo;
 import play.Logger;
 import play.data.Form;
 import play.mvc.Controller;
@@ -46,7 +47,7 @@ public class AdminCarSeries extends Controller {
         List<CarSeries> carSeriesList = carSeriesPagingList.getPage(currentPage).getList();
 
 
-        return ok(views.html.adminCarSeries.render(carSeriesList, totalPageCount, currentPage));
+        return ok(views.html.adminCarSeries.render(carSeriesList, totalPageCount, currentPage, ""));
 
 
 
@@ -94,6 +95,8 @@ public class AdminCarSeries extends Controller {
 
 
         CarSeriesDTO carSeriesForm = carSeriesFormFactory.bindFromRequest().get();
+        String message = "";
+
 
         if (Constants.OP_CREATE.equalsIgnoreCase(carSeriesForm.operationCode)) {
             // create
@@ -119,8 +122,17 @@ public class AdminCarSeries extends Controller {
             carSeries.carBrand = carBrand;
             Ebean.update(carSeries);
         } else if (Constants.OP_DELETE.equalsIgnoreCase(carSeriesForm.operationCode)) {
-            Ebean.delete(CarSeries.class, carSeriesForm.id);
-            //@todo check dependencies before delete
+
+            List<CarVideo> carVideoList = Ebean.find(CarVideo.class).where().eq("carSeries.id", carSeriesForm.id).findList();
+            if(carVideoList != null && carVideoList.size() >0) {
+                // 有视频的时候不能删除车系。
+                System.out.println("有视频的时候不能删除车系。");
+
+                message = "不能删除车系：" + carSeriesForm.name + "\t 原因：不能删除已经关联了视频的车系，请首先删除所有视频";
+
+            } else {
+                Ebean.delete(CarSeries.class, carSeriesForm.id);
+            }
         }
 
 
@@ -134,7 +146,7 @@ public class AdminCarSeries extends Controller {
         List<CarSeries> carSeriesList = carSeriesPagingList.getPage(currentPage).getList();
 
 
-        return ok(views.html.adminCarSeries.render(carSeriesList, totalPageCount, currentPage));
+        return ok(views.html.adminCarSeries.render(carSeriesList, totalPageCount, currentPage, message));
     }
 
 }

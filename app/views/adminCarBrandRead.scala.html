@@ -10,7 +10,7 @@
 
 
 
-    @helper.form(action = routes.AdminCarBrand.saveOrUpdateOrDelete(), 'class -> "form-horizontal") {
+    @helper.form(action = routes.AdminCarBrand.saveOrUpdateOrDelete(), 'class -> "form-horizontal", 'style -> "margin-top: 20px;") {
 
         @if(Constants.OP_READ.equalsIgnoreCase(carBrandForm.get().operationCode) ||
                 Constants.OP_UPDATE.equalsIgnoreCase(carBrandForm.get().operationCode) ||
