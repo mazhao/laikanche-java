@@ -16,16 +16,17 @@ import java.util.List;
 
 public class Application extends Controller {
 
+
     public static Result index(Long brandId) {
 
         // get current page if not then ist page
         String pageStr = request().getQueryString("page");
         int page = 0;
-        if(pageStr != null) {
+        if (pageStr != null) {
             page = Integer.parseInt(pageStr) - 1;
         }
 
-        if(Logger.isDebugEnabled()) {
+        if (Logger.isDebugEnabled()) {
             Logger.debug("enter brand id:" + brandId);
         }
 
@@ -37,7 +38,7 @@ public class Application extends Controller {
         // step 2 get car video list
         Query<CarVideo> queryObject = null;
         if (brandId == 0) {
-            queryObject =  CarVideo.find.orderBy().desc("createDate");
+            queryObject = CarVideo.find.orderBy().desc("createDate");
         } else {
             String query = "find carVideo where carSeries.carBrand.id = :brandId";
             queryObject = CarVideo.find.setQuery(query).setParameter("brandId", brandId).orderBy().desc("createDate");
@@ -52,7 +53,33 @@ public class Application extends Controller {
 
         List<CarVideo> carVideoList = carVideoPagingList.getPage(currentPage).getList();
 
-        return ok( views.html.index.render(carVideoList, carBrandList, brandId, totalPageCount, currentPage));
+        return ok(views.html.index.render(carVideoList, carBrandList, brandId, totalPageCount, currentPage));
     }
 
+
+    public static Result evaluate(Long cvid, int type) {
+
+        if(Logger.isDebugEnabled()) {
+            Logger.debug("input car video id:" + cvid + " type:" + type);
+        }
+
+        if (cvid != null) {
+
+            CarVideo carVideo = Ebean.find(CarVideo.class, cvid);
+
+            if (Constants.EVALUATION_TYPE_GOOD == type) {
+                carVideo.countGood++;
+            } else if (Constants.EVALUATION_TYPE_BAD == type) {
+                carVideo.countBad++;
+            } else {
+                // do nothing
+            }
+
+            Ebean.save(carVideo);
+            if(Logger.isDebugEnabled()) {
+                Logger.debug("evaluation saved!");
+            }
+        }
+        return ok("ok");
+    }
 }

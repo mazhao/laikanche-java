@@ -36,5 +36,8 @@ public class Constants {
     public static final String SESSION_ADMIN_LOGIN = "admin.login";
     public static final String SESSION_ADMIN_LOGIN_TRUE = "true";
 
+    public static final int EVALUATION_TYPE_GOOD = 1;
+    public static final int EVALUATION_TYPE_BAD = 2;
+
     private Constants() {}
 }

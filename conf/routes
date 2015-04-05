@@ -11,6 +11,8 @@
 GET           /                                      controllers.Application.index(brandId: Long = 0)
 GET           /:brandId                              controllers.Application.index(brandId: Long )
 
+GET           /eval/:cvid/:etype                      controllers.Application.evaluate(cvid :Long, etype :Int)
+
 
 #
 
