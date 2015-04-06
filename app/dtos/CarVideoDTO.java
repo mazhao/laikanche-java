@@ -3,6 +3,7 @@ package dtos;
 import models.CarBrand;
 import models.CarSeries;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -36,6 +37,9 @@ public class CarVideoDTO {
     public Long countBad;  // 差评数：20
 
     public String screenFileName;
+
+    public List<CarVideoTagDTO> carVideoTagDTOList = new ArrayList<CarVideoTagDTO>();
+    public List<Long> tags = new ArrayList<Long>();
 
     // -- operation code --
     public String operationCode;

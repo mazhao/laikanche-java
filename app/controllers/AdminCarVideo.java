@@ -4,8 +4,10 @@ import actions.AdminAuthAction;
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.PagingList;
 import dtos.CarVideoDTO;
+import dtos.CarVideoTagDTO;
 import models.CarSeries;
 import models.CarVideo;
+import models.CarVideoTag;
 import play.Logger;
 import play.data.Form;
 import play.mvc.Controller;
@@ -15,8 +17,10 @@ import play.mvc.With;
 import utils.Constants;
 import utils.Tools;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by mazhao on 15/1/10.
@@ -60,6 +64,20 @@ public class AdminCarVideo extends Controller {
         // prepare for dropdownload list
         carVideoDTO.carSeriesList = CarSeries.find.all();
 
+        // show all tags here
+        List<CarVideoTag> carVideoTagList = Ebean.find(CarVideoTag.class).findList();
+
+        for(int i = 0;i < carVideoTagList.size(); i++) {
+            CarVideoTag carVideoTag = carVideoTagList.get(i);
+
+            CarVideoTagDTO carVideoTagDTO = new CarVideoTagDTO();
+            carVideoTagDTO.id = carVideoTag.id;
+            carVideoTagDTO.name = carVideoTag.name;
+            carVideoTagDTO.description = carVideoTag.description;
+
+            carVideoDTO.carVideoTagDTOList.add(carVideoTagDTO);
+        }
+
 
         if (Constants.OP_DELETE.equalsIgnoreCase(operation) ||
                 Constants.OP_UPDATE.equalsIgnoreCase(operation) ||
@@ -80,6 +98,14 @@ public class AdminCarVideo extends Controller {
             carVideoDTO.reporter = carVideo.reporter;
             carVideoDTO.id = carVideo.id;
             carVideoDTO.screenFileName = carVideo.screenFileName;
+
+            // add checked tags
+            for(int i = 0; i < carVideo.tags.size(); i++) {
+                CarVideoTag carVideoTag = carVideo.tags.get(i);
+                carVideoDTO.tags.add(carVideoTag.id);
+            }
+
+
 
 
             carVideoDTO.operationCode = operation;
@@ -161,6 +187,22 @@ public class AdminCarVideo extends Controller {
             }
             carVideo.carSeries = Ebean.find(CarSeries.class, seriesId);
 
+
+            // update all the tags
+            List<CarVideoTag> carVideoTagList = new ArrayList<CarVideoTag>();
+            for (int i = 0; i < carVideoDTO.tags.size(); i++) {
+
+                if(Logger.isDebugEnabled()) {
+                    Logger.debug("tag id:" + carVideoDTO.tags.get(i));
+                }
+
+                if(carVideoDTO.tags.get(i) != null){
+
+                    CarVideoTag carVideoTag = Ebean.find(CarVideoTag.class, carVideoDTO.tags.get(i));
+                    carVideoTagList.add(carVideoTag);
+                }
+            }
+            carVideo.tags = carVideoTagList;
 
             Ebean.update(carVideo);
 
