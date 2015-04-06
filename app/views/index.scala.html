@@ -118,9 +118,15 @@
                 <nav>
                     <ul class="pagination">
                         <li>
-                            <a href="#" aria-label="Previous">
+                            @if(currentPage <= 0) {
                                 <span aria-hidden="true">&laquo;</span>
-                            </a>
+
+                            } else {
+                                <a href="http://@request().host()/@currentBrandId?tag=@currentTagId&page=@currentPage" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            }
+
                         </li>
 
                         @for(i <- 1 to totalPageCount) {
@@ -131,9 +137,15 @@
                             }
                         }
                         <li>
-                            <a href="#" aria-label="Next">
+
+
+                            @if(currentPage+1 >= totalPageCount) {
                                 <span aria-hidden="true">&raquo;</span>
-                            </a>
+                            } else {
+                                <a href="http://@request().host()/@currentBrandId?tag=@currentTagId&page=@(currentPage + 2)" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            }
                         </li>
                     </ul>
                 </nav>
