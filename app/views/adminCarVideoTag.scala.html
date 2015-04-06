@@ -1,0 +1,66 @@
+@(carVideoTagList: List[CarVideoTag])(totalPageCount: Integer)(currentPage: Integer)(message: String)
+
+
+@import utils.Tools
+
+@main("Laikanche Admin") {
+
+    <div class="panel panel-default " style="margin-top:20px;" ;>
+        <div class="panel-heading">汽车评测管理</div>
+        <div class="panel-body" >
+            <table class="table table-hover" width="100%" cellpadding="0" cellspacing="0"  style="border-collapse:collapse;">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>名称</th>
+                        <th>描述</th>
+                        <th>修改</th>
+                        <th>删除</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                @for(carVideoTag <- carVideoTagList) {
+
+                    <tr>
+                        <td scope="row">@carVideoTag.id</td>
+                        <td>@carVideoTag.name</td>
+                        <td>@carVideoTag.description</td>
+
+                        <td><a href="/admin/tag/@carVideoTag.id/update">修改</a></td>
+                        <td><a href="/admin/tag/@carVideoTag.id/delete">删除</a></td>
+                    </tr>
+
+                }
+                </tbody>
+            </table>
+
+            <nav>
+                <ul class="pagination">
+                    <li>
+                        <a href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+
+                    @for(i <- 1 to totalPageCount ) {
+                        <li><a href="http://@request().host()/admin/tag?page=@i">@i</a></li>
+                    }
+                    <li>
+                        <a href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+        </div>
+
+        <div class="panel-footer">
+            <a class="btn btn-info" href="/admin/tag/0/create">添加新车评</a>
+        </div>
+
+    </div>
+
+
+}

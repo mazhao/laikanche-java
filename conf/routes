@@ -45,13 +45,13 @@ GET           /admin/home                            controllers.Admin.index()
 # get       /admin/che/$id  -> read
 # delete    /admin/che/$id  -> delete
 
-GET           /admin/che                             controllers.AdminChe.index()
-GET           /admin/che/:id                         controllers.AdminChe.read(id : Long)
-GET           /admin/che/:id/edit                    controllers.AdminChe.edit(id: Long)
-POST          /admin/che                             controllers.AdminChe.save()
-DELETE        /admin/che/:id                         controllers.AdminChe.delete(id: Long)
+#GET           /admin/che                             controllers.AdminChe.index()
+#GET           /admin/che/:id                         controllers.AdminChe.read(id : Long)
+#GET           /admin/che/:id/edit                    controllers.AdminChe.edit(id: Long)
+#POST          /admin/che                             controllers.AdminChe.save()
+#DELETE        /admin/che/:id                         controllers.AdminChe.delete(id: Long)
 
-GET           /admin/che-gotoadd                     controllers.AdminChe.gotoAdd()
+#GET           /admin/che-gotoadd                     controllers.AdminChe.gotoAdd()
 
 # car brand begin
 
@@ -60,7 +60,7 @@ GET           /admin/che-gotoadd                     controllers.AdminChe.gotoAd
 #   car brand
 #  ------------------------------------
 
-# 通用 Controller
+# 通用 Controller 用来加载图片文件 img src= http://laikanche.com/file/abc.jpg
 
 GET           /file/:name                            controllers.CommonFileController.index(name: String)
 
@@ -91,7 +91,13 @@ GET           /admin/carvideo                        controllers.AdminCarVideo.i
 GET           /admin/carvideo/:id/:operation         controllers.AdminCarVideo.read(id:Long, operation: String)
 POST          /admin/carvideo                        controllers.AdminCarVideo.saveOrUpdateOrDelete()
 
+#  ------------------------------------
+#   car video tags 汽车视频标签，用来快速分类视频
+#  ------------------------------------
 
+GET           /admin/tag                        controllers.AdminCarVideoTag.index()
+GET           /admin/tag/:id/:operation         controllers.AdminCarVideoTag.read(id:Long, operation: String)
+POST          /admin/tag                        controllers.AdminCarVideoTag.saveOrUpdateOrDelete()
 
 
 
