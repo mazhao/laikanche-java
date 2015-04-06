@@ -62,10 +62,13 @@ public class AdminCarVideo extends Controller {
         CarVideoDTO carVideoDTO = new CarVideoDTO();
 
         // prepare for dropdownload list
-        carVideoDTO.carSeriesList = CarSeries.find.all();
+        carVideoDTO.carSeriesList = CarSeries.find.order().asc("carBrand.name").order().asc("name").findList();
 
         // show all tags here
         List<CarVideoTag> carVideoTagList = Ebean.find(CarVideoTag.class).findList();
+
+
+
 
         for(int i = 0;i < carVideoTagList.size(); i++) {
             CarVideoTag carVideoTag = carVideoTagList.get(i);
