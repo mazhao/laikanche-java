@@ -88,14 +88,12 @@ public class AdminCarVideoTag extends Controller {
             Ebean.save(carVideoTag);
 
         } else if (Constants.OP_DELETE.equalsIgnoreCase(carVideoTagForm.operationCode)) {
-            // @todo: check video existences before delete tag
-//            List<CarSeries> carSeriesList = Ebean.find(CarSeries.class).where().eq("carBrand.id", carBrandForm.id).findList();
-//            if(carSeriesList != null && carSeriesList.size() > 0) {
-//                message = "不能删除车品牌：" + carBrandForm.name + "\t 原因：不能删除已经关联了车系的车品牌，请首先删除所有车系";
-//
-//            } else {
+            CarVideoTag carVideoTag = Ebean.find(CarVideoTag.class, carVideoTagForm.id);
+            if(carVideoTag.videos != null && carVideoTag.videos.size() != 0) {
+                message = "不能删除标签：" + carVideoTagForm.name + "\t 原因：不能删除已经关联了视频的标签，请首先取消所有与视频的关联";
+            } else {
                 Ebean.delete(CarVideoTag.class, carVideoTagForm.id);
-//            }
+            }
         } else if (Constants.OP_UPDATE.equalsIgnoreCase(carVideoTagForm.operationCode)) {
             CarVideoTag carVideoTag = Ebean.find(CarVideoTag.class, carVideoTagForm.id);
             carVideoTag.name = carVideoTagForm.name;
