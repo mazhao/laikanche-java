@@ -1,4 +1,4 @@
-@(carVideoList: List[CarVideo])(carBrandList: List[CarBrand])(currentBrandId: Long)(totalPageCount: Integer)(currentPage: Integer)
+@(carVideoList: List[CarVideo])(carBrandList: List[CarBrand])(currentBrandId: Long)(carVideoTagList: List[CarVideoTag])(currentTagId: Long)(totalPageCount: Integer)(currentPage: Integer)
 
 @import utils.Tools
 
@@ -43,21 +43,44 @@
                 <div class="panel-body" >
 
                     @if(0 == currentBrandId) {
-                        <a style="width:80px;" class="btn btn-success" href="http://@request().host()" role="button">全部</a>
+                        <a style="width:80px;" class="btn btn-success" href="http://@request().host()?tag=@currentTagId" role="button">全部</a>
                     } else {
-                        <a style="width:80px;" class="btn btn-default" href="http://@request().host()" role="button">全部</a>
+                        <a style="width:80px;" class="btn btn-default" href="http://@request().host()?tag=@currentTagId" role="button">全部</a>
                     }
 
                     @for(carBrand <- carBrandList) {
 
                         @if(carBrand.id == currentBrandId) {
-                            <a style="width:80px;margin-top:1px; margin-bottom:1px;" class="btn btn-success" href="http://@request().host()/@carBrand.id" role="button">@carBrand.name</a>
+                            <a style="width:80px;margin-top:1px; margin-bottom:1px;" class="btn btn-success" href="http://@request().host()/@carBrand.id?tag=@currentTagId" role="button">@carBrand.name</a>
                         } else {
-                            <a style="width:80px;margin-top:1px; margin-bottom:1px;" class="btn btn-default" href="http://@request().host()/@carBrand.id" role="button">@carBrand.name</a>
+                            <a style="width:80px;margin-top:1px; margin-bottom:1px;" class="btn btn-default" href="http://@request().host()/@carBrand.id?tag=@currentTagId" role="button">@carBrand.name</a>
                         }
                     }
                 </div>
             </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">标签</div>
+                <div class="panel-body" >
+
+                    @if(0 == currentTagId) {
+                        <a style="width:80px;" class="btn btn-success" href="http://@request().host()/@currentBrandId" role="button">全部</a>
+                    } else {
+                        <a style="width:80px;" class="btn btn-default" href="http://@request().host()/@currentBrandId" role="button">全部</a>
+                    }
+
+                    @for(carVideoTag <- carVideoTagList) {
+
+                        @if(carVideoTag.id == currentTagId) {
+                            <a style="width:80px;margin-top:1px; margin-bottom:1px;" class="btn btn-success" href="http://@request().host()/@currentBrandId?tag=@carVideoTag.id" role="button">@carVideoTag.name</a>
+                        } else {
+                            <a style="width:80px;margin-top:1px; margin-bottom:1px;" class="btn btn-default" href="http://@request().host()/@currentBrandId?tag=@carVideoTag.id" role="button">@carVideoTag.name</a>
+                        }
+                    }
+                </div>
+            </div>
+
+
 
             <div class="row">
 
@@ -101,7 +124,7 @@
                         </li>
 
                         @for(i <- 1 to totalPageCount) {
-                            <li><a href="http://@request().host()/@currentBrandId?page=@i">@i</a></li>
+                            <li><a href="http://@request().host()/@currentBrandId?tag=@currentTagId&page=@i">@i</a></li>
                         }
                         <li>
                             <a href="#" aria-label="Next">
