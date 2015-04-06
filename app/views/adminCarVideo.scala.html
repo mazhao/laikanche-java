@@ -70,7 +70,13 @@
                         </li>
 
                         @for(i <- 1 to totalPageCount ) {
-                            <li><a href="http://@request().host()/admin/carvideo?page=@i">@i</a></li>
+                            @if( currentPage+1 == i) {
+                                <li class="active"><a href="http://@request().host()/admin/carvideo?page=@i">@i</a></li>
+                            } else {
+                                <li><a href="http://@request().host()/admin/carvideo?page=@i">@i</a></li>
+                            }
+
+
                         }
                         <li>
                             <a href="#" aria-label="Next">
