@@ -5,6 +5,7 @@ import com.avaje.ebean.PagingList;
 import com.avaje.ebean.Query;
 import com.avaje.ebean.RawSqlBuilder;
 import models.CarBrand;
+import models.CarItem;
 import models.CarVideo;
 import models.CarVideoTag;
 import play.*;
@@ -148,4 +149,30 @@ public class Application extends Controller {
         }
         return ok("ok");
     }
+
+
+    public static Result item( ) {
+
+        // get current page if not then ist page
+        String pageStr = request().getQueryString("page");
+        int page = 0;
+        if (pageStr != null) {
+            page = Integer.parseInt(pageStr) - 1;
+        }
+
+        PagingList<CarItem> carItemPagingList = Ebean.find(CarItem.class).order().desc("createDate").findPagingList(Constants.COUNT_PER_PAGE);
+
+        List<CarItem> carItemList = carItemPagingList.getPage(page).getList();
+
+        int totalPageCount = 0;
+        if(carItemList !=null && carItemList.size() > 0) {
+            totalPageCount = carItemPagingList.getTotalPageCount();
+        }
+
+        int currentPage = page;
+
+        return ok(views.html.item.render(carItemList, totalPageCount, currentPage));
+
+    }
+
 }

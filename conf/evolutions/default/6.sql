@@ -1,0 +1,16 @@
+CREATE TABLE `laikanche`.`car_item` (
+  `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+  `title` VARCHAR(255) NULL,
+  `from_web` VARCHAR(255) NULL,
+  `promotion_price` DOUBLE NULL,
+  `original_price` DOUBLE NULL,
+  `keywords` VARCHAR(255) NULL,
+  `screen_file_content_type` VARCHAR(255) NULL,
+  `screen_file_name` VARCHAR(255) NULL,
+  `description` VARCHAR(255) NULL,
+  `reporter` VARCHAR(255) NULL,
+  `create_date` DATETIME NULL,
+  `count_good` BIGINT(20) NULL,
+  `count_bad` BIGINT(20) NULL,
+  `buy_url` VARCHAR(2000) NULL,
+  PRIMARY KEY (`id`));

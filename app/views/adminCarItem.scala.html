@@ -1,0 +1,70 @@
+@(carItemList: List[CarItem])(totalPageCount: Integer)(currentPage: Integer)(message: String)
+
+@main("Laikanche Admin") {
+
+    <div class="panel panel-default " style="margin-top: 20px;">
+        <div class="panel-heading">精品饰品管理
+            @if(message != null ){
+                <span class="label label-danger">@message</span>
+            }
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>标题</th>
+                        <th>描述</th>
+                        <th>主图</th>
+                        <th>来源</th>
+                        <th>关键字</th>
+                        <th>修改</th>
+                        <th>删除</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @for(carItem <- carItemList) {
+                    <tr>
+                        <th scope="row">@carItem.id</th>
+                        <td><a href="/admin/item/@carItem.id/read">@carItem.title</a></td>
+                        <td> @carItem.description </td>
+                        <td>
+                            <img src="http://@request().host()/file/@carItem.screenFileName" width="150px" height="100px">
+                        </td>
+                        <td> @carItem.fromWeb </td>
+                        <td> @carItem.keywords </td>
+                        <td> <a href="/admin/item/@carItem.id/update">修改</a></td>
+                        <td><a href="/admin/item/@carItem.id/delete">删除</a></td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+            <nav>
+                <ul class="pagination">
+                    <li>
+                        <a href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+
+                    @for(i <- 1 to totalPageCount ) {
+                        <li><a href="http://@request().host()/admin/item?page=@i">@i</a></li>
+                    }
+                    <li>
+                        <a href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="panel-footer">
+            @session().get("op_message") <br/>
+            <a class="btn btn-info" href="/admin/item/0/create">添加新饰品</a>
+        </div>
+
+    </div>
+
+
+}

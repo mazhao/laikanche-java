@@ -27,7 +27,7 @@
                 <nav>
                     <ul class="nav nav-justified">
                         <li class="active"><a href="#">评测视频</a></li>
-                        <li><a href="#">精选饰品</a></li>
+                        <li><a href="http://@request().host()/item">精选饰品</a></li>
                         <li><a href="#">精选二手车</a></li>
                         <li><a href="#">抢试驾</a></li>
                         <li><a href="#">关于我们</a></li>
@@ -51,9 +51,9 @@
                     @for(carBrand <- carBrandList) {
 
                         @if(carBrand.id == currentBrandId) {
-                            <a style="width:80px;margin-top:1px; margin-bottom:1px;" class="btn btn-success" href="http://@request().host()/@carBrand.id?tag=@currentTagId" role="button">@carBrand.name</a>
+                            <a style="width:80px;margin-top:1px; margin-bottom:1px;" class="btn btn-success" href="http://@request().host()/brand/@carBrand.id?tag=@currentTagId" role="button">@carBrand.name</a>
                         } else {
-                            <a style="width:80px;margin-top:1px; margin-bottom:1px;" class="btn btn-default" href="http://@request().host()/@carBrand.id?tag=@currentTagId" role="button">@carBrand.name</a>
+                            <a style="width:80px;margin-top:1px; margin-bottom:1px;" class="btn btn-default" href="http://@request().host()/brand/@carBrand.id?tag=@currentTagId" role="button">@carBrand.name</a>
                         }
                     }
                 </div>
@@ -64,17 +64,17 @@
                 <div class="panel-body" >
 
                     @if(0 == currentTagId) {
-                        <a style="width:80px;" class="btn btn-success" href="http://@request().host()/@currentBrandId" role="button">全部</a>
+                        <a style="width:80px;" class="btn btn-success" href="http://@request().host()/brand/@currentBrandId" role="button">全部</a>
                     } else {
-                        <a style="width:80px;" class="btn btn-default" href="http://@request().host()/@currentBrandId" role="button">全部</a>
+                        <a style="width:80px;" class="btn btn-default" href="http://@request().host()/brand/@currentBrandId" role="button">全部</a>
                     }
 
                     @for(carVideoTag <- carVideoTagList) {
 
                         @if(carVideoTag.id == currentTagId) {
-                            <a style="width:80px;margin-top:1px; margin-bottom:1px;" class="btn btn-success" href="http://@request().host()/@currentBrandId?tag=@carVideoTag.id" role="button">@carVideoTag.name</a>
+                            <a style="width:80px;margin-top:1px; margin-bottom:1px;" class="btn btn-success" href="http://@request().host()/brand/@currentBrandId?tag=@carVideoTag.id" role="button">@carVideoTag.name</a>
                         } else {
-                            <a style="width:80px;margin-top:1px; margin-bottom:1px;" class="btn btn-default" href="http://@request().host()/@currentBrandId?tag=@carVideoTag.id" role="button">@carVideoTag.name</a>
+                            <a style="width:80px;margin-top:1px; margin-bottom:1px;" class="btn btn-default" href="http://@request().host()/brand/@currentBrandId?tag=@carVideoTag.id" role="button">@carVideoTag.name</a>
                         }
                     }
                 </div>
@@ -102,7 +102,7 @@
                             <br/>由 @carVideo.reporter 在 @Tools.formatYYYYMMDDHHMMSS(carVideo.createDate) 创建。
                             <br/>来源于：<a href="@carVideo.fromWeb" target="_blank">@carVideo.fromWeb</a>
                             <br/>
-                            品牌：<a href="http://@request().host()/@carVideo.carSeries.carBrand.id">@carVideo.carSeries.carBrand.name</a>
+                            品牌：<a href="http://@request().host()/brand/@carVideo.carSeries.carBrand.id">@carVideo.carSeries.carBrand.name</a>
                             车系：@carVideo.carSeries.name
                             @if(Tools.isSameDay(carVideo.createDate, new Date())) {
                                 <span class="label label-success">每日上新</span>
@@ -122,7 +122,7 @@
                                 <span aria-hidden="true">&laquo;</span>
 
                             } else {
-                                <a href="http://@request().host()/@currentBrandId?tag=@currentTagId&page=@currentPage" aria-label="Previous">
+                                <a href="http://@request().host()/brand/@currentBrandId?tag=@currentTagId&page=@currentPage" aria-label="Previous">
                                     <span aria-hidden="true">&laquo;</span>
                                 </a>
                             }
@@ -131,9 +131,9 @@
 
                         @for(i <- 1 to totalPageCount) {
                             @if(currentPage + 1 == i) {
-                                <li class="active"><a href="http://@request().host()/@currentBrandId?tag=@currentTagId&page=@i">@i</a></li>
+                                <li class="active"><a href="http://@request().host()/brand/@currentBrandId?tag=@currentTagId&page=@i">@i</a></li>
                             } else {
-                                <li><a href="http://@request().host()/@currentBrandId?tag=@currentTagId&page=@i">@i</a></li>
+                                <li><a href="http://@request().host()/brand/@currentBrandId?tag=@currentTagId&page=@i">@i</a></li>
                             }
                         }
                         <li>
@@ -142,7 +142,7 @@
                             @if(currentPage+1 >= totalPageCount) {
                                 <span aria-hidden="true">&raquo;</span>
                             } else {
-                                <a href="http://@request().host()/@currentBrandId?tag=@currentTagId&page=@(currentPage + 2)" aria-label="Next">
+                                <a href="http://@request().host()/brand/@currentBrandId?tag=@currentTagId&page=@(currentPage + 2)" aria-label="Next">
                                     <span aria-hidden="true">&raquo;</span>
                                 </a>
                             }

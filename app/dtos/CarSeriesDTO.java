@@ -12,10 +12,8 @@ public class CarSeriesDTO {
 
     public Long id;
 
-    @Constraints.Required
     public String name;
 
-    @Constraints.Required
     public String description;
 
     public String operationCode;

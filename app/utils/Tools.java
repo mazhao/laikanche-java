@@ -7,6 +7,7 @@ import play.mvc.Http;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.UUID;
@@ -155,6 +156,15 @@ public class Tools {
 
     }
 
+
+    public static String getPercentage(double d) {
+        NumberFormat fmt = NumberFormat.getPercentInstance();
+        fmt.setMaximumFractionDigits(0);
+        String discount = fmt.format(d);
+
+        return discount.replace('%', '折');
+
+    }
 
 
 

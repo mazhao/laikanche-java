@@ -1,0 +1,145 @@
+@(carItemList: List[CarItem])(totalPageCount: Integer)(currentPage: Integer)
+
+@import utils.Tools
+
+<html>
+    <head>
+        <title>来看车 - 最权威的汽车视频测试网站 </title>
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/justified-nav.css")">
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
+        <script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")" type="text/javascript"></script>
+
+        <script src="@routes.Assets.at("javascripts/ie-emulation-modes-warning.js")" type="text/javascript"></script>
+
+
+        <link rel="stylesheet" href="@routes.Assets.at("stylesheets/bootstrap.min.css")">
+        <link rel="stylesheet" href="@routes.Assets.at("stylesheets/bootstrap-theme.min.css")">
+        <script src="@routes.Assets.at("javascripts/bootstrap.min.js")" type="text/javascript"></script>
+
+    </head>
+    <body>
+
+        <div class="container">
+
+            <div class="masthead">
+                <h2>  <a href="http://@request().host()"> 来看车 - <small>最权威的汽车视频测试网站</small> </a></h2>
+                <nav>
+                    <ul class="nav nav-justified">
+                        <li><a href="http://@request().host()">评测视频</a></li>
+                        <li class="active"><a href="http://@request().host()/item">精选饰品</a></li>
+                        <li><a href="#">精选二手车</a></li>
+                        <li><a href="#">抢试驾</a></li>
+                        <li><a href="#">关于我们</a></li>
+                    </ul>
+                </nav>
+            </div>
+
+            <br/>
+
+            <div class="row">
+            @for(carItem <- carItemList) {
+
+                <div class="col-lg-4">
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading" style="overflow:hidden; height:100px;">
+                            <h3><a href="@carItem.buyUrl" target="_blank">@carItem.title</a></h3>
+                        </div>
+                        <div class="panel-body" style="text-align:center;">
+                            <img src="http://@request().host()/file/@carItem.screenFileName" class="img-rounded" width="320px" height="240px">
+                        </div>
+                        <div class="panel-footer">
+
+                            原价:@carItem.originalPrice 促销价:@carItem.promotionPrice 折扣:<font color="red">@(  Tools.getPercentage( carItem.promotionPrice / carItem.originalPrice))</font>
+
+                                <br/>好评： <span id="good@carItem.id">@carItem.countGood</span>  <a onclick="doGood ( @carItem.id )">顶↑</a>
+                            差评： <span id="bad@carItem.id">@carItem.countBad</span> <a onclick = "doBad ( @carItem.id  )">踩↓</a>
+
+                            <br/>由 @carItem.reporter 在 @Tools.formatYYYYMMDDHHMMSS(carItem.createDate) 创建。
+                            <br/>来源于： @carItem.fromWeb
+                            <br/>
+                            @if(Tools.isSameDay(carItem.createDate, new Date())) {
+                                <span class="label label-success">每日上新</span>
+
+                            } <br/>
+                        </div>
+                    </div>
+
+                </div>
+            }
+
+            </div>
+            <div class="row">
+                <nav>
+                    <ul class="pagination">
+                        <li>
+                        @if(currentPage <= 0) {
+                            <span aria-hidden="true">&laquo;</span>
+
+                        } else {
+                            <a href="http://@request().host()/item?page=@currentPage" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        }
+
+                        </li>
+
+                        @for(i <- 1 to totalPageCount) {
+                            @if(currentPage + 1 == i) {
+                                <li class="active"><a href="http://@request().host()/item?page=@i">@i</a></li>
+                            } else {
+                                <li><a href="http://@request().host()/item?page=@i">@i</a></li>
+                            }
+                        }
+                        <li>
+
+
+                        @if(currentPage+1 >= totalPageCount) {
+                            <span aria-hidden="true">&raquo;</span>
+                        } else {
+                            <a href="http://@request().host()/item?page=@(currentPage + 2)" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        }
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+
+
+
+                <!-- Site footer -->
+            <footer class="footer">
+                <p>© 来看车（LaiKanChe） 2015 浙ICP备15002942号</p>
+                <a href="http://@request().host()/admin/home" target="_blank"> 进入管理后台 </a>
+            </footer>
+
+        </div>
+
+        <script type="text/javascript">
+    function doGood ( carid ) {
+        $.get("http://@request().host()/eval/" + carid + "/1", function(data){
+            //
+            var sel = "#good" + carid;
+            $( sel ).html(parseInt($( sel ).html()) + 1);
+            // alert("ok");
+
+    });
+    }
+
+    function doBad ( carid ) {
+        $.get("http://@request().host()/eval/" + carid + "/2", function(data){
+
+            var sel = "#bad" + carid;
+            $( sel ).html(parseInt($( sel ).html()) + 1);
+           // alert("ok");
+
+    });
+    }
+    </script>
+
+    </body>
+
+</html>
