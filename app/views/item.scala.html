@@ -47,14 +47,22 @@
                             <h3><a href="@carItem.buyUrl" target="_blank">@carItem.title</a></h3>
                         </div>
                         <div class="panel-body" style="text-align:center;">
-                            <img src="http://@request().host()/file/@carItem.screenFileName" class="img-rounded" width="320px" height="240px">
+                            <a href="@carItem.buyUrl" target="_blank">
+                                <img src="http://@request().host()/file/@carItem.screenFileName" class="img-rounded" width="320px" height="240px"/>
+                            </a>
                         </div>
                         <div class="panel-footer">
+                            <span class="label label-default">原价：@carItem.originalPrice</span>
+                            <span class="label label-primary">促销价：@carItem.promotionPrice</span>
+                            <span class="label label-danger">折扣：@(  Tools.getPercentage( carItem.promotionPrice / carItem.originalPrice)) </span>
 
-                            原价:@carItem.originalPrice 促销价:@carItem.promotionPrice 折扣:<font color="red">@(  Tools.getPercentage( carItem.promotionPrice / carItem.originalPrice))</font>
 
-                                <br/>好评： <span id="good@carItem.id">@carItem.countGood</span>  <a onclick="doGood ( @carItem.id )">顶↑</a>
-                            差评： <span id="bad@carItem.id">@carItem.countBad</span> <a onclick = "doBad ( @carItem.id  )">踩↓</a>
+
+
+                                @*<br/>好评： <span id="good@carItem.id">@carItem.countGood</span>  <a onclick="doGood ( @carItem.id )">顶↑</a>*@
+                            @*差评： <span id="bad@carItem.id">@carItem.countBad</span> <a onclick = "doBad ( @carItem.id  )">踩↓</a>*@
+                            @**@
+
 
                             <br/>由 @carItem.reporter 在 @Tools.formatYYYYMMDDHHMMSS(carItem.createDate) 创建。
                             <br/>来源于： @carItem.fromWeb
