@@ -158,11 +158,15 @@ public class Tools {
 
 
     public static String getPercentage(double d) {
-        NumberFormat fmt = NumberFormat.getPercentInstance();
-        fmt.setMaximumFractionDigits(0);
-        String discount = fmt.format(d);
+        NumberFormat fmt = NumberFormat.getInstance();
+        fmt.setMinimumFractionDigits(1);
+        fmt.setMaximumFractionDigits(1);
 
-        return discount.replace('%', '折');
+        String discount = fmt.format(d*10);
+
+
+
+        return discount+"折";
 
     }
 
@@ -171,6 +175,10 @@ public class Tools {
     public static void main(String[] args) {
         Logger.debug("brand:" + Tools.brand("1-1"));
         Logger.debug("series:" + Tools.series("1-1"));
+        System.out.println(getPercentage(0.27));
+        System.out.println(getPercentage(0.2));
+        System.out.println(getPercentage(0));
+        System.out.println(getPercentage(0.01));
 
     }
 

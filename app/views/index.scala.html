@@ -17,6 +17,8 @@
         <link rel="stylesheet" href="@routes.Assets.at("stylesheets/bootstrap-theme.min.css")">
         <script src="@routes.Assets.at("javascripts/bootstrap.min.js")" type="text/javascript"></script>
 
+
+
     </head>
     <body>
 
@@ -43,17 +45,17 @@
                 <div class="panel-body" >
 
                     @if(0 == currentBrandId) {
-                        <a style="width:80px;" class="btn btn-success" href="http://@request().host()?tag=@currentTagId" role="button">全部</a>
+                        <a style="width:100px;" class="btn btn-success" href="http://@request().host()?tag=@currentTagId" role="button">全部</a>
                     } else {
-                        <a style="width:80px;" class="btn btn-default" href="http://@request().host()?tag=@currentTagId" role="button">全部</a>
+                        <a style="width:100px;" class="btn btn-default" href="http://@request().host()?tag=@currentTagId" role="button">全部</a>
                     }
 
                     @for(carBrand <- carBrandList) {
 
                         @if(carBrand.id == currentBrandId) {
-                            <a style="width:80px;margin-top:1px; margin-bottom:1px;" class="btn btn-success" href="http://@request().host()/brand/@carBrand.id?tag=@currentTagId" role="button">@carBrand.name</a>
+                            <a style="width:100px;margin-top:1px; margin-bottom:1px;" class="btn btn-success" href="http://@request().host()/brand/@carBrand.id?tag=@currentTagId" role="button">@carBrand.name</a>
                         } else {
-                            <a style="width:80px;margin-top:1px; margin-bottom:1px;" class="btn btn-default" href="http://@request().host()/brand/@carBrand.id?tag=@currentTagId" role="button">@carBrand.name</a>
+                            <a style="width:100px;margin-top:1px; margin-bottom:1px;" class="btn btn-default" href="http://@request().host()/brand/@carBrand.id?tag=@currentTagId" role="button">@carBrand.name</a>
                         }
                     }
                 </div>
@@ -64,17 +66,17 @@
                 <div class="panel-body" >
 
                     @if(0 == currentTagId) {
-                        <a style="width:80px;" class="btn btn-success" href="http://@request().host()/brand/@currentBrandId" role="button">全部</a>
+                        <a style="width:100px;" class="btn btn-success" href="http://@request().host()/brand/@currentBrandId" role="button">全部</a>
                     } else {
-                        <a style="width:80px;" class="btn btn-default" href="http://@request().host()/brand/@currentBrandId" role="button">全部</a>
+                        <a style="width:100px;" class="btn btn-default" href="http://@request().host()/brand/@currentBrandId" role="button">全部</a>
                     }
 
                     @for(carVideoTag <- carVideoTagList) {
 
                         @if(carVideoTag.id == currentTagId) {
-                            <a style="width:80px;margin-top:1px; margin-bottom:1px;" class="btn btn-success" href="http://@request().host()/brand/@currentBrandId?tag=@carVideoTag.id" role="button">@carVideoTag.name</a>
+                            <a style="width:100px;margin-top:1px; margin-bottom:1px;" class="btn btn-success" href="http://@request().host()/brand/@currentBrandId?tag=@carVideoTag.id" role="button">@carVideoTag.name</a>
                         } else {
-                            <a style="width:80px;margin-top:1px; margin-bottom:1px;" class="btn btn-default" href="http://@request().host()/brand/@currentBrandId?tag=@carVideoTag.id" role="button">@carVideoTag.name</a>
+                            <a style="width:100px;margin-top:1px; margin-bottom:1px;" class="btn btn-default" href="http://@request().host()/brand/@currentBrandId?tag=@carVideoTag.id" role="button">@carVideoTag.name</a>
                         }
                     }
                 </div>
@@ -93,7 +95,9 @@
                             <h3><a href="@carVideo.url" target="_blank">@carVideo.title</a></h3>
                         </div>
                         <div class="panel-body" style="text-align:center;">
-                            <img src="http://@request().host()/file/@carVideo.screenFileName" class="img-rounded" width="320px" height="240px">
+                            <a href="@carVideo.url" target="_blank">
+                            <img src="http://@request().host()/file/@carVideo.screenFileName" class="img-rounded" width="320px" height="240px"/>
+                            </a>
                         </div>
                         <div class="panel-footer">
                             <br/>好评： <span id="good@carVideo.id">@carVideo.countGood</span>  <a onclick="doGood ( @carVideo.id )">顶↑</a>
@@ -151,32 +155,6 @@
                 </nav>
             </div>
 
-            @**
-
-            <!-- Example row of columns -->
-            <div class="row">
-            <div class="col-lg-4">
-            <h2>视频评测</h2>
-            <p>
-            全球最丰富的视频评测。包含外观，动力，内饰，控件，驾乘感受，养护等全方位评测，是您选车购车的唯一可信平台。
-
-            </p>
-            <p><a class="btn btn-primary" href="#" role="button">更多内容 »</a></p>
-            </div>
-            <div class="col-lg-4">
-            <h2>英雄榜</h2>
-            <p>好车英雄榜，车客英雄榜。发现好车，发现好友，人、车、技术的结晶。 </p>
-            <p><a class="btn btn-primary" href="#" role="button">更多内容 »</a></p>
-            </div>
-            <div class="col-lg-4">
-            <h2>长测 & 试驾</h2>
-            <p>申请长期测试机会，申请线下试驾机会。</p>
-            <p><a class="btn btn-primary" href="#" role="button">更多内容 »</a></p>
-            </div>
-            </div>
-
-            **@
-
 
                 <!-- Site footer -->
             <footer class="footer">
@@ -187,6 +165,8 @@
         </div>
 
     <script type="text/javascript">
+
+
     function doGood ( carid ) {
         $.get("http://@request().host()/eval/" + carid + "/1", function(data){
             //
