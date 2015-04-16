@@ -1,5 +1,7 @@
 package utils;
 
+import com.avaje.ebean.Ebean;
+import com.avaje.ebean.SqlQuery;
 import org.springframework.util.FileSystemUtils;
 import play.Logger;
 import play.Play;
@@ -172,6 +174,16 @@ public class Tools {
 
 
 
+    public static int getRawSqlResultPageCount(String query) {
+        String queryCntStr = "select count(*) as count from (" + query + " ) v";
+
+        SqlQuery queryCnt = Ebean.createSqlQuery(queryCntStr);
+        int cnt = queryCnt.findUnique().getInteger("count");
+
+        return cnt % Constants.COUNT_PER_PAGE == 0 ? cnt/Constants.COUNT_PER_PAGE : cnt/Constants.COUNT_PER_PAGE + 1;
+
+    }
+
     public static void main(String[] args) {
         Logger.debug("brand:" + Tools.brand("1-1"));
         Logger.debug("series:" + Tools.series("1-1"));
@@ -179,6 +191,9 @@ public class Tools {
         System.out.println(getPercentage(0.2));
         System.out.println(getPercentage(0));
         System.out.println(getPercentage(0.01));
+
+        new Integer("");
+        new Long("");
 
     }
 

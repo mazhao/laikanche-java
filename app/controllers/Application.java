@@ -1,9 +1,6 @@
 package controllers;
 
-import com.avaje.ebean.Ebean;
-import com.avaje.ebean.PagingList;
-import com.avaje.ebean.Query;
-import com.avaje.ebean.RawSqlBuilder;
+import com.avaje.ebean.*;
 import models.CarBrand;
 import models.CarItem;
 import models.CarVideo;
@@ -12,6 +9,7 @@ import play.*;
 import play.mvc.*;
 
 import utils.Constants;
+import utils.Tools;
 import views.html.*;
 
 import java.util.ArrayList;
@@ -20,60 +18,65 @@ import java.util.List;
 public class Application extends Controller {
 
 
-    public static Result index(Long brandId) {
-
-        // parse page
-        // get current page if not then ist page
-        String pageStr = request().getQueryString("page");
-        int page = 0;
-        if (pageStr != null) {
-            page = Integer.parseInt(pageStr) - 1;
-        }
+    public static Result index(Long currentBrandId) {
 
         if (Logger.isDebugEnabled()) {
-            Logger.debug("enter brand id:" + brandId);
+            Logger.debug("enter brand id:" + currentBrandId);
         }
 
-        // parse tag query parameter
-        String tagStr = request().getQueryString("tag");
-        Long tagId = 0L;
-        if (tagStr != null) {
-            tagId = new Long(tagStr);
-        }
-        if (Logger.isDebugEnabled()) {
-            Logger.debug("enter tag id:" + tagId);
+        int currentPage = 0;
+        try {
+            currentPage = Integer.parseInt(getQueryParameter("page"));
+        } catch (Exception ex) {
+            currentPage = 0;
         }
 
+        Long currentTagId = 0l;
+        try {
+            currentTagId = Long.parseLong(getQueryParameter("tag"));
+        } catch (Exception ex) {
+            currentTagId = 0l;
+        }
 
         // @todo add cache here
 
         // step 1 get car brand list
-        List<CarBrand> carBrandList = CarBrand.find.all();
-
-        //Long currentTagId = tag;
-
-        List<CarVideoTag> carVideoTagList = CarVideoTag.find.all();
+        List<CarBrand> carBrandList = CarBrand.find.order().asc("name").findList();
+        List<CarVideoTag> carVideoTagList = CarVideoTag.find.order().asc("name").findList();
 
 
         // step 2 get car video list
-        Query<CarVideo> queryObject = null;
+        //Query<CarVideo> queryObject = null;
+        List<CarVideo> carVideoList = null;
+        int totalPageCount = 0;
 
-        if(brandId == 0 && tagId != 0) {
+        if (currentBrandId == 0 && currentTagId != 0) {
+
             // only tag
-           String queryStr = "select v.id, v.title, v.from_web, v.url, v.reporter, v.create_date, v.count_good, v.count_bad  from \n" +
-                   "car_video v left outer join \n" +
-                   "tag_video tv  on v.id = tv.video_id\n" +
-                   "where \n" +
-                   "    tv.tag_id = " + tagId;
-            queryObject = Ebean.find(CarVideo.class);
-            queryObject.setRawSql(RawSqlBuilder.parse(queryStr).create());
+            String queryStr = "select v.id, v.title, v.from_web, v.url, v.reporter, v.create_date, v.count_good, v.count_bad  from \n" +
+                    "car_video v left outer join \n" +
+                    "tag_video tv  on v.id = tv.video_id\n" +
+                    "where \n" +
+                    "    tv.tag_id = " + currentTagId;
 
-        } else if(brandId !=0 && tagId == 0) {
+
+            Query<CarVideo> queryObject = Ebean.find(CarVideo.class);
+            queryObject.setRawSql(RawSqlBuilder.parse(queryStr).create()).orderBy().desc("createDate");
+            PagingList<CarVideo> carVideoPagingList = queryObject.findPagingList(Constants.COUNT_PER_PAGE);
+
+            carVideoList = carVideoPagingList.getPage(currentPage).getList();
+            totalPageCount = Tools.getRawSqlResultPageCount(queryStr);
+
+        } else if (currentBrandId != 0 && currentTagId == 0) {
             // only brand
             String query = "find carVideo where carSeries.carBrand.id = :brandId";
-            queryObject = CarVideo.find.setQuery(query).setParameter("brandId", brandId).orderBy().desc("createDate");
+            Query<CarVideo> queryObject = CarVideo.find.setQuery(query).setParameter("brandId", currentBrandId).orderBy().desc("createDate");
+            PagingList<CarVideo> carVideoPagingList = queryObject.findPagingList(Constants.COUNT_PER_PAGE);
 
-        } else if(brandId != 0 && tagId != 0) {
+            carVideoList = carVideoPagingList.getPage(currentPage).getList();
+            totalPageCount = carVideoPagingList.getTotalPageCount();
+
+        } else if (currentBrandId != 0 && currentTagId != 0) {
             // tag & brand
             String queryStr = "select v.id, v.title, v.from_web, v.url, v.reporter, v.create_date, v.count_good, v.count_bad   from \n" +
                     "car_video v,\n" +
@@ -84,49 +87,32 @@ public class Application extends Controller {
                     "and \n" +
                     "v.id = tv.video_id\n" +
                     "and\n" +
-                    "s.car_brand_id =  " + brandId+ " \n" +
+                    "s.car_brand_id =  " + currentBrandId + " \n" +
                     "and \n" +
-                    "tv.tag_id = " + tagId;
-            queryObject = Ebean.find(CarVideo.class);
-            queryObject.setRawSql(RawSqlBuilder.parse(queryStr).create());
+                    "tv.tag_id = " + currentTagId;
+            Query<CarVideo> queryObject = Ebean.find(CarVideo.class);
+            queryObject.setRawSql(RawSqlBuilder.parse(queryStr).create()).orderBy().desc("createDate");
+            PagingList<CarVideo> carVideoPagingList = queryObject.findPagingList(Constants.COUNT_PER_PAGE);
 
-        } else if(brandId == 0 && tagId == 0) {
+            carVideoList = carVideoPagingList.getPage(currentPage).getList();
+            totalPageCount = Tools.getRawSqlResultPageCount(queryStr);
+        } else if (currentBrandId == 0 && currentTagId == 0) {
             // nothing to be filtered
-            queryObject = CarVideo.find.orderBy().desc("createDate");
+            Query<CarVideo> queryObject = CarVideo.find.orderBy().desc("createDate");
+            PagingList<CarVideo> carVideoPagingList = queryObject.findPagingList(Constants.COUNT_PER_PAGE);
+
+            carVideoList = carVideoPagingList.getPage(currentPage).getList();
+            totalPageCount = carVideoPagingList.getTotalPageCount();
         } else {
             // nothing to return
         }
 
-
-//
-//        if (brandId == 0) {
-//            queryObject = CarVideo.find.orderBy().desc("createDate");
-//        } else {
-//            String query = "find carVideo where carSeries.carBrand.id = :brandId";
-//            queryObject = CarVideo.find.setQuery(query).setParameter("brandId", brandId).orderBy().desc("createDate");
-//        }
-
-
-
-        // paging
-        PagingList<CarVideo> carVideoPagingList = queryObject.findPagingList(Constants.COUNT_PER_PAGE);
-
-
-
-        int currentPage = page;
-        List<CarVideo> carVideoList = carVideoPagingList.getPage(currentPage).getList();
-
-        int totalPageCount = 0;
-        if(carVideoList !=null && carVideoList.size() > 0) {
-            totalPageCount = carVideoPagingList.getTotalPageCount();
-        }
-        return ok(views.html.index.render(carVideoList, carBrandList, brandId, carVideoTagList, tagId, totalPageCount, currentPage));
+        return ok(views.html.index.render(carVideoList, carBrandList, currentBrandId, carVideoTagList, currentTagId, totalPageCount, currentPage));
     }
-
 
     public static Result evaluate(Long cvid, int type) {
 
-        if(Logger.isDebugEnabled()) {
+        if (Logger.isDebugEnabled()) {
             Logger.debug("input car video id:" + cvid + " type:" + type);
         }
 
@@ -143,7 +129,7 @@ public class Application extends Controller {
             }
 
             Ebean.save(carVideo);
-            if(Logger.isDebugEnabled()) {
+            if (Logger.isDebugEnabled()) {
                 Logger.debug("evaluation saved!");
             }
         }
@@ -151,7 +137,7 @@ public class Application extends Controller {
     }
 
 
-    public static Result item( ) {
+    public static Result item() {
 
         // get current page if not then ist page
         String pageStr = request().getQueryString("page");
@@ -164,10 +150,14 @@ public class Application extends Controller {
 
         List<CarItem> carItemList = carItemPagingList.getPage(page).getList();
 
+
         int totalPageCount = 0;
-        if(carItemList !=null && carItemList.size() > 0) {
+        if (carItemList != null && carItemList.size() > 0) {
             totalPageCount = carItemPagingList.getTotalPageCount();
         }
+
+
+        Logger.debug("after get total page count");
 
         int currentPage = page;
 
@@ -175,4 +165,16 @@ public class Application extends Controller {
 
     }
 
+    /**
+     *
+     * @param param
+     * @return
+     */
+    private static String getQueryParameter(String param) {
+        String paramStr = request().getQueryString(param);
+        if (paramStr == null) {
+            paramStr = "";
+        }
+        return paramStr;
+    }
 }
