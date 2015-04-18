@@ -65,7 +65,7 @@ public class AdminCarSeries extends Controller {
         // set car brand drop download list
 
         // @todo cache to improve performance
-        List<CarBrand> carBrandList = Ebean.find(CarBrand.class).findList();
+        List<CarBrand> carBrandList = Ebean.find(CarBrand.class).order().asc("name").findList();
         carSeriesDto.carBrandList = carBrandList;
         carSeriesDto.operationCode = operation;
 
