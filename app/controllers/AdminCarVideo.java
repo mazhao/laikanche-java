@@ -152,6 +152,22 @@ public class AdminCarVideo extends Controller {
                 carVideo.screenFileContentType = filePart.getContentType();
             }
 
+            // add tags
+            List<CarVideoTag> carVideoTagList = new ArrayList<CarVideoTag>();
+            for (int i = 0; i < carVideoDTO.tags.size(); i++) {
+
+                if(Logger.isDebugEnabled()) {
+                    Logger.debug("tag id:" + carVideoDTO.tags.get(i));
+                }
+
+                if(carVideoDTO.tags.get(i) != null){
+
+                    CarVideoTag carVideoTag = Ebean.find(CarVideoTag.class, carVideoDTO.tags.get(i));
+                    carVideoTagList.add(carVideoTag);
+                }
+            }
+            carVideo.tags = carVideoTagList;
+
             carVideo.carSeries = Ebean.find(CarSeries.class, seriesId);
 
             // init
@@ -192,6 +208,7 @@ public class AdminCarVideo extends Controller {
 
 
             // update all the tags
+            // @todo bug add tags to create method
             List<CarVideoTag> carVideoTagList = new ArrayList<CarVideoTag>();
             for (int i = 0; i < carVideoDTO.tags.size(); i++) {
 
